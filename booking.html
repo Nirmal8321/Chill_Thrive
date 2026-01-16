@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chill Thrive | Book a Session</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="booking.html">Book Now</a>
+  <a href="awareness.html">Awareness</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- Page Header -->
+<header class="page-header">
+  <h1>Book Your Recovery Session</h1>
+  <p>Choose your therapy and start your recovery journey.</p>
+</header>
+
+<!-- Booking Form -->
+<section class="booking-section">
+  <form class="booking-form" id="bookingForm">
+
+    <label>Full Name</label>
+    <input type="text" id="name" placeholder="Enter your name" required />
+
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="Enter your email" required />
+
+    <label>Select Service</label>
+    <select id="service" required>
+      <option value="">-- Select Service --</option>
+      <option>Ice Bath Therapy</option>
+      <option>Jacuzzi Therapy</option>
+      <option>Steam Bath</option>
+      <option>Full Recovery Combo</option>
+    </select>
+
+    <label>Select Date</label>
+    <input type="date" id="date" required />
+
+    <label>Select Time</label>
+    <input type="time" id="time" required />
+
+    <button type="submit" class="btn">Confirm Booking</button>
+
+    <p class="success-message" id="successMessage"></p>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 Chill Thrive | Wellness & Recovery</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
