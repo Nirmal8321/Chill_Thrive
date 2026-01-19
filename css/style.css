@@ -493,3 +493,23 @@ copyright {
     gap: 10px;
   }
 }
+/* Admin Table */
+.admin-table {
+  width: 90%;
+  margin: 40px auto;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.admin-table th {
+  background: #0077cc;
+  color: white;
+}
