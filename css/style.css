@@ -1,515 +1,281 @@
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* css/style.css */
+
+/* --- 1. Variables & Premium Theme --- */
+:root {
+  --primary: #0077cc;
+  --primary-light: #4dabf5;
+  --primary-dark: #004c8c;
+  --accent: #00d2ff;
+  --bg-gradient: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --text-dark: #0a2540;
+  --text-gray: #556b82;
+  --shadow-sm: 0 5px 20px rgba(0, 119, 204, 0.05);
+  --shadow-hover: 0 20px 50px rgba(0, 119, 204, 0.15);
+  --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
+/* --- 2. Global Resets --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f9ff;
-  color: #0a2540;
-  line-height: 1.6;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-dark);
+  line-height: 1.7;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
-/* Navbar */
+/* --- 3. Advanced Animations --- */
+
+/* Fade Up (Used in HTML) */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle Floating (for Hero/Cards) */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-fade-up {
+  opacity: 0; /* Hidden by default until JS triggers it */
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* --- 4. Premium Navbar --- */
 .navbar {
-  background: white;
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(15px); /* Frosted Glass Effect */
+  padding: 18px 40px;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 40px;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.03);
 }
 
 .navbar a {
   text-decoration: none;
-  color: #0077cc;
+  color: var(--text-dark);
   font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease;
+  padding-bottom: 5px;
 }
 
-.navbar a:hover {
-  color: #003366;
+/* Navbar Slide Underline Animation */
+.navbar a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: var(--primary);
+  transition: width 0.3s ease;
 }
 
-/* Buttons */
+.navbar a:hover { color: var(--primary); }
+.navbar a:hover::after { width: 100%; }
+
+/* --- 5. "Slide Animation" Buttons --- */
 .btn {
   display: inline-block;
-  margin-top: 15px;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #0077cc, #00aaff);
-  color: white;
-  border-radius: 30px;
+  padding: 14px 35px;
+  border-radius: 50px;
   text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  color: white;
+  
+  /* The Magic Gradient Slide */
+  background-image: linear-gradient(to right, #0077cc 0%, #00d2ff 51%, #0077cc 100%);
+  background-size: 200% auto;
+  transition: 0.5s;
+  box-shadow: 0 10px 20px rgba(0, 119, 204, 0.3);
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,119,204,0.3);
+  background-position: right center; /* Moves the gradient */
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 119, 204, 0.4);
 }
 
-/* Hero Section */
-.hero {
-  height: 90vh;
-  background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
-  text-align: center;
-  padding-top: 140px;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-}
-
-/* Services Preview (Home) */
-.services-preview {
-  padding: 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 25px;
-}
-
-.card {
-  background: white;
-  padding: 35px;
-  text-align: center;
-  border-radius: 16px;
-  text-decoration: none;
-  color: #0a2540;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-}
-
-/* Page Header */
-.page-header {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.page-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-/* Services Page */
-.services-container {
-  padding: 40px 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-}
-
-.service-card {
-  background: white;
-  padding: 35px;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-  position: relative;
-}
-
-.service-card h2 {
-  margin-bottom: 10px;
-}
-
-.service-card ul {
-  margin: 15px 0;
-  padding-left: 20px;
-}
-
-.service-card li {
-  margin-bottom: 6px;
-}
-
-/* Highlight Combo */
-.highlight {
-  border: 2px solid #0077cc;
-}
-
-.badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #0077cc;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 25px;
-  background: #ffffff;
-  margin-top: 40px;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.2rem;
-  }
-}
-/* Booking Page */
-.booking-section {
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-.booking-form {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-}
-
-.booking-form label {
-  display: block;
-  margin-top: 15px;
-  font-weight: 600;
-}
-
-.booking-form input,
-.booking-form select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.success-message {
-  margin-top: 20px;
-  color: #0077cc;
-  font-weight: 600;
-}
-/* Awareness Page */
-.content-section {
-  padding: 40px 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-}
-
-.content-card {
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-.content-card h2 {
-  margin-bottom: 10px;
-  color: #0077cc;
-}
-
-.warning {
-  border-left: 5px solid #ff6b6b;
-}
-/* Founder Page */
-.founder-section {
-  padding: 60px;
-  display: flex;
-  justify-content: center;
-}
-
-.founder-card {
-  background: white;
-  display: flex;
-  gap: 40px;
-  padding: 40px;
-  border-radius: 20px;
-  max-width: 1000px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-}
-
-.founder-card img {
-  width: 280px;
-  height: 350px;
-  object-fit: cover;
-  border-radius: 16px;
-}
-
-.founder-content h2 {
-  margin-bottom: 10px;
-}
-
-.founder-content h3 {
-  margin-top: 20px;
-}
-
-.founder-content ul {
-  margin: 10px 0 20px;
-  padding-left: 20px;
-}
-
-.founder-content li {
-  margin-bottom: 6px;
-}
-
-blockquote {
-  margin-top: 20px;
-  padding-left: 15px;
-  border-left: 4px solid #0077cc;
-  font-style: italic;
-  color: #003366;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .founder-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .founder-card img {
-    width: 220px;
-    height: 280px;
-  }
-}
-/* Gallery Page */
-.gallery-section {
-  padding: 40px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-}
-
-.gallery-section img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-
-.gallery-section img:hover {
-  transform: scale(1.05);
-}
-/* Contact Page */
-.contact-section {
-  padding: 60px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.contact-info {
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-.contact-form {
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .contact-section {
-    grid-template-columns: 1fr;
-  }
-}
-/* ===============================
-   HOME PAGE ENHANCEMENTS
-================================ */
-
-/* Hero Section */
-.hero {
-  height: 95vh;
-  background: linear-gradient(
-      rgba(0, 40, 80, 0.55),
-      rgba(0, 40, 80, 0.55)
-    ),
-    url("../assets/images/gallery1.jpg") center/cover no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-
-.hero-content {
-  text-align: center;
-  max-width: 700px;
-  animation: fadeUp 1s ease;
-}
-
-.hero h1 {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-}
-
-.hero p {
-  font-size: 1.3rem;
-  margin-bottom: 35px;
-  opacity: 0.9;
-}
-
-/* Hero Buttons */
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
+/* Outline Button Variant */
 .btn.outline {
   background: transparent;
   border: 2px solid white;
+  box-shadow: none;
 }
-
 .btn.outline:hover {
   background: white;
-  color: #0077cc;
+  color: var(--primary);
 }
 
-/* Services Preview */
-.services-preview {
-  padding: 80px 60px;
-  background: #f0f6ff;
-}
-
-.services-preview .card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-  transition: transform 0.4s, box-shadow 0.4s;
-}
-
-.services-preview .card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-}
-
-/* Animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.4rem;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-  }
-}
-/* ===============================
-   GLOBAL FOOTER
-================================ */
-
-.site-footer {
-  background: linear-gradient(135deg, #002244, #004488);
-  color: white;
-  padding: 50px 20px;
-  text-align: center;
-}
-
-.footer-content {
-  max-width: 800px;
-  margin: auto;
-}
-
-.site-footer h3 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
-
-.site-footer p {
-  opacity: 0.9;
-  margin-bottom: 20px;
-}
-
-.footer-links {
+/* --- 6. Hero Section (Aesthetic) --- */
+.hero {
+  min-height: 90vh;
+  background: linear-gradient(135deg, rgba(10, 37, 64, 0.7), rgba(0, 119, 204, 0.6)),
+              url('../assets/images/gallery1.jpg') center/cover fixed; /* Parallax effect */
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 25px;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+  position: relative;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.hero p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+  opacity: 0.95;
+}
+
+/* --- 7. Cards with "Slide" & Glow --- */
+.services-container, .services-preview, .content-section, .gallery-section, .founder-section {
+  padding: 100px 10%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+}
+
+.card, .service-card, .content-card, .founder-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  padding: 45px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* The Card Hover Animation (Slide & Color) */
+.card:hover, .service-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary-light);
+}
+
+/* Optional: Add a subtle colorful gradient line at the bottom */
+.card::after, .service-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; width: 0%; height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.4s ease;
+}
+.card:hover::after, .service-card:hover::after {
+  width: 100%; /* Slide line animation */
+}
+
+/* Typography inside cards */
+.card h2, .service-card h2, .content-card h2 {
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.card p, .service-card p {
+  color: var(--text-gray);
   margin-bottom: 20px;
 }
 
-.footer-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-copyright {
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .footer-links {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-/* Admin Table */
-.admin-table {
-  width: 90%;
-  margin: 40px auto;
-  border-collapse: collapse;
-  background: white;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.admin-table th,
-.admin-table td {
+/* --- 8. Inputs & Forms (Glass Style) --- */
+input, select, textarea {
+  width: 100%;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  background: #f9fcff;
+  font-size: 1rem;
+  transition: 0.3s;
 }
 
-.admin-table th {
-  background: #0077cc;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(0, 119, 204, 0.1); /* Glow Ring */
+}
+
+/* --- 9. Gallery Images --- */
+.gallery-section img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: transform 0.5s ease;
+  box-shadow: var(--shadow-sm);
+}
+.gallery-section img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
+
+/* --- 10. Footer --- */
+footer {
+  background: #0a1e30;
   color: white;
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 80px;
+}
+/* --- FIXED PAGE HEADERS (Services, Booking, etc.) --- */
+.page-header {
+  text-align: center;            /* Centers the text */
+  padding: 100px 20px 60px;      /* Adds nice breathing room */
+  background: linear-gradient(to bottom, #f0f7ff, #ffffff); /* Subtle Fade */
+  border-bottom: 1px solid rgba(0, 119, 204, 0.1);
+  margin-bottom: 40px;
+  animation: fadeInUp 0.8s ease-out forwards; /* Adds the slide-up animation */
+}
+
+.page-header h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--primary);         /* Uses your premium blue */
+  margin-bottom: 15px;
+  letter-spacing: -1px;
+  text-transform: capitalize;
+}
+
+.page-header p {
+  font-size: 1.3rem;
+  color: #556b82;                /* Soft gray for subtitle */
+  max-width: 700px;              /* Keeps text readable */
+  margin: 0 auto;                /* Centers the paragraph block */
+  line-height: 1.6;
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
 }

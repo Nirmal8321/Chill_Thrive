@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chill Thrive | Gallery</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
@@ -18,20 +20,65 @@
   <a href="contact.html">Contact</a>
 </nav>
 
-<header class="page-header">
+<header class="page-header animate-fade-up">
   <h1>Gallery</h1>
   <p>Moments from our recovery sessions & wellness experiences.</p>
 </header>
 
-<section class="gallery-section">
-  <img src="assets/images/gallery1.jpg" alt="Ice Bath Session">
-  <img src="assets/images/gallery2.jpg" alt="Steam Therapy">
-  <img src="assets/images/gallery3.jpg" alt="Wellness Session">
+<section class="gallery-section" id="galleryContainer">
+  <p style="text-align:center; width:100%; color:#666;">Loading gallery images...</p>
 </section>
 
-<footer>
+<footer class="site-footer">
   <p>© 2026 Chill Thrive | Wellness & Recovery</p>
 </footer>
+
+<script type="module">
+  import { db, collection, getDocs } from "./js/firebase.js";
+
+  const container = document.getElementById("galleryContainer");
+
+  async function loadGallery() {
+    try {
+      const snapshot = await getDocs(collection(db, "gallery"));
+      
+      if (snapshot.empty) {
+        container.innerHTML = `<p style="text-align:center; width:100%;">No images found. Add some from the Admin Panel!</p>`;
+        return;
+      }
+
+      container.innerHTML = ""; // Clear loader
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const img = document.createElement("img");
+        img.src = data.url;
+        img.alt = "Gallery Image";
+        img.classList.add("animate-fade-up"); // Add animation
+        
+        // Handle image loading error
+        img.onerror = function() {
+            this.style.display = 'none';
+        };
+        
+        container.appendChild(img);
+      });
+
+      // Animation Observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
+        });
+      });
+      document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = "Error loading gallery.";
+    }
+  }
+  loadGallery();
+</script>
 
 </body>
 </html>

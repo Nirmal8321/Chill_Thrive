@@ -2,28 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Chill Thrive | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chill Thrive | Where Recovery Meets Resilience</title>
+  
   <link rel="stylesheet" href="css/style.css" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    .hero { position: relative; overflow: hidden; }
+    #recoveryCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+    .hero-content { position: relative; z-index: 2; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 20, 40, 0.7); z-index: 0; }
+  </style>
 </head>
 
 <body>
 
-<!-- Navigation Bar -->
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
   <a href="awareness.html">Awareness</a>
+  <a href="founder.html">Founder</a>
   <a href="gallery.html">Gallery</a>
   <a href="contact.html">Contact</a>
 </nav>
 
-<!-- Hero Section -->
 <header class="hero">
-  <div class="hero-content">
+  <canvas id="recoveryCanvas"></canvas>
+  <div class="hero-content animate-fade-up">
     <h1>Welcome to Chill Thrive</h1>
-    <p>Where Recovery Meets Resilience</p>
-
+    <p>Rejuvenate your body. Reset your mind.</p>
     <div class="hero-buttons">
       <a href="booking.html" class="btn">Book a Session</a>
       <a href="services.html" class="btn outline">Explore Services</a>
@@ -31,33 +41,187 @@
   </div>
 </header>
 
-
-<!-- Services Preview -->
 <section class="services-preview">
-  <a href="services.html" class="card">Ice Bath Therapy</a>
-  <a href="services.html" class="card">Jacuzzi Therapy</a>
-  <a href="services.html" class="card">Steam Bath</a>
-  <a href="services.html" class="card">Combo Therapy</a>
+  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
+    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+      <i class="fas fa-snowflake" style="font-size: 2.5rem; color: #00aaff;"></i>
+    </div>
+    <h2>Ice Bath</h2>
+    <p>Boost immunity & reduce inflammation with sub-zero recovery.</p>
+    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
+  </a>
+
+  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
+    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+      <i class="fas fa-hot-tub" style="font-size: 2.5rem; color: #0077cc;"></i>
+    </div>
+    <h2>Jacuzzi Therapy</h2>
+    <p>Deep muscle relaxation with high-pressure hydrotherapy.</p>
+    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
+  </a>
+
+  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
+    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+      <i class="fas fa-wind" style="font-size: 2.5rem; color: #88c0ff;"></i>
+    </div>
+    <h2>Steam Bath</h2>
+    <p>Detoxify your skin and improve respiratory health.</p>
+    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
+  </a>
+
+  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
+    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+      <i class="fas fa-layer-group" style="font-size: 2.5rem; color: #005fa3;"></i>
+    </div>
+    <h2>Combo Therapy</h2>
+    <p>The ultimate contrast therapy for peak performance.</p>
+    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">View Package &rarr;</span>
+  </a>
 </section>
 
-<!-- Footer -->
+<section class="content-section" style="background: transparent;">
+  <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 20px;">
+    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Why Chill Thrive?</h2>
+    <p style="color: var(--text-gray);">We combine science and comfort for your recovery.</p>
+  </div>
+
+  <div class="content-card animate-fade-up" style="text-align: center;">
+    <i class="fas fa-flask" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>Science-Backed</h3>
+    <p>Protocols designed to optimize physical and mental recovery.</p>
+  </div>
+
+  <div class="content-card animate-fade-up" style="text-align: center;">
+    <i class="fas fa-user-md" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>Trained Professionals</h3>
+    <p>Guided sessions by experts to ensure safety and effectiveness.</p>
+  </div>
+
+  <div class="content-card animate-fade-up" style="text-align: center;">
+    <i class="fas fa-pump-soap" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>Hygienic & Premium</h3>
+    <p>State-of-the-art filtration and daily sanitization.</p>
+  </div>
+
+  <div class="content-card animate-fade-up" style="text-align: center;">
+    <i class="fas fa-users" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>Community Driven</h3>
+    <p>Join a like-minded community focused on growth and wellness.</p>
+  </div>
+</section>
+
+<section class="services-container" style="padding-top: 0;" id="testimonialContainer">
+  <div style="grid-column: 1 / -1; text-align: center;">
+    <h2 style="font-size: 2.5rem;">What Our Members Say</h2>
+    <p>Loading reviews...</p>
+  </div>
+</section>
+
+<section style="text-align: center; padding: 100px 20px; background: linear-gradient(135deg, #0077cc, #005fa3); color: white;">
+  <h2 class="animate-fade-up" style="font-size: 3rem; margin-bottom: 20px;">Start Your Recovery Journey Today</h2>
+  <p class="animate-fade-up" style="margin-bottom: 40px; font-size: 1.3rem; opacity: 0.9;">Book your first session and feel the difference.</p>
+  <a href="booking.html" class="btn animate-fade-up" style="background: white; color: #0077cc; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">Book Now</a>
+</section>
+
 <footer class="site-footer">
   <div class="footer-content">
-    <h3>Chill Thrive</h3>
-    <p>Science-backed recovery & wellness experiences.</p>
-
-    <div class="footer-links">
-      <a href="services.html">Services</a>
-      <a href="booking.html">Book</a>
-      <a href="awareness.html">Awareness</a>
-      <a href="contact.html">Contact</a>
+    <h3 style="margin-bottom: 15px;">Chill Thrive</h3>
+    <p style="opacity: 0.8;">Where Recovery Meets Resilience.</p>
+    <div class="footer-links" style="margin: 30px 0; display: flex; justify-content: center; gap: 20px;">
+      <a href="services.html" style="color: white; text-decoration: none;">Services</a>
+      <a href="booking.html" style="color: white; text-decoration: none;">Book</a>
+      <a href="awareness.html" style="color: white; text-decoration: none;">Awareness</a>
+      <a href="contact.html" style="color: white; text-decoration: none;">Contact</a>
     </div>
-
-    <p class="copyright">
-      © 2026 Chill Thrive. All rights reserved.
-    </p>
+    <p class="copyright" style="font-size: 0.9rem; opacity: 0.6;">© 2026 Chill Thrive. All rights reserved.</p>
   </div>
 </footer>
+
+<script type="module">
+  import { db, collection, getDocs } from "./js/firebase.js";
+
+  // --- Particle Animation ---
+  const canvas = document.getElementById('recoveryCanvas');
+  const ctx = canvas.getContext('2d');
+  let particlesArray;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
+  const mouse = { x: null, y: null, radius: 150 }
+  window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+  class Particle {
+      constructor(x, y, directionX, directionY, size, color) {
+          this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+      }
+      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = '#ffffff'; ctx.fill(); }
+      update() {
+          if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+          if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+          this.x += this.directionX; this.y += this.directionY;
+          this.draw();
+      }
+  }
+  function init() {
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 9000;
+      for (let i = 0; i < numberOfParticles; i++) {
+          let size = (Math.random() * 3) + 1;
+          let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+          let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+          let directionX = (Math.random() * 1) - 0.5; let directionY = (Math.random() * 1) - 0.5;
+          particlesArray.push(new Particle(x, y, directionX, directionY, size, '#ffffff'));
+      }
+  }
+  function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+      connect();
+  }
+  function connect() {
+      for (let a = 0; a < particlesArray.length; a++) {
+          let dx = particlesArray[a].x - mouse.x; let dy = particlesArray[a].y - mouse.y; let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) { ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
+      }
+  }
+  init(); animate();
+
+  // --- Load Testimonials Dynamically ---
+  async function loadTestimonials() {
+    const container = document.getElementById("testimonialContainer");
+    try {
+        const s = await getDocs(collection(db, "testimonials"));
+        if(s.empty) {
+            container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center;"><h2>What Our Members Say</h2><p>No reviews yet. Check back soon!</p></div>`;
+            return;
+        }
+
+        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center;"><h2 style="font-size: 2.5rem;">What Our Members Say</h2></div>`;
+        
+        s.forEach(doc => {
+            const data = doc.data();
+            let starsHtml = "";
+            for(let i=0; i<data.stars; i++) starsHtml += `<i class="fas fa-star"></i>`;
+            
+            const card = document.createElement("div");
+            card.className = "card animate-fade-up";
+            card.innerHTML = `
+                <div style="margin-bottom: 15px; color: #ffd700;">${starsHtml}</div>
+                <p style="font-style: italic;">"${data.review}"</p>
+                <div style="margin-top: 20px; font-weight: bold; color: var(--primary);">— ${data.name}</div>
+            `;
+            container.appendChild(card);
+        });
+    } catch(err) { console.error(err); }
+  }
+  loadTestimonials();
+
+  // --- Scroll Animation ---
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
+  });
+  document.querySelectorAll('.animate-fade-up').forEach((el) => observer.observe(el));
+</script>
 
 </body>
 </html>

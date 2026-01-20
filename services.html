@@ -2,85 +2,114 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chill Thrive | Services</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
   <a href="awareness.html">Awareness</a>
+  <a href="founder.html">Founder</a>
   <a href="gallery.html">Gallery</a>
   <a href="contact.html">Contact</a>
 </nav>
 
-<!-- Page Header -->
-<header class="page-header">
+<header class="page-header animate-fade-up">
   <h1>Our Services</h1>
-  <p>Science-backed recovery experiences designed for performance and relaxation.</p>
+  <p>Science-backed recovery experiences designed for performance.</p>
 </header>
 
-<!-- Services Section -->
-<section class="services-container">
-
-  <div class="service-card">
-    <h2>Ice Bath Therapy</h2>
-    <p>Cold immersion therapy to reduce inflammation and enhance recovery.</p>
-    <ul>
-      <li>Muscle recovery</li>
-      <li>Reduced soreness</li>
-      <li>Improved focus</li>
-    </ul>
-    <p><strong>Duration:</strong> 30 / 60 mins</p>
-    <p><strong>Price:</strong> ₹999</p>
-    <a href="booking.html" class="btn">Book Now</a>
-  </div>
-
-  <div class="service-card">
-    <h2>Jacuzzi Therapy</h2>
-    <p>Warm hydrotherapy for deep muscle relaxation and stress relief.</p>
-    <ul>
-      <li>Muscle relaxation</li>
-      <li>Improved blood flow</li>
-      <li>Stress relief</li>
-    </ul>
-    <p><strong>Duration:</strong> 30 mins</p>
-    <p><strong>Price:</strong> ₹799</p>
-    <a href="booking.html" class="btn">Book Now</a>
-  </div>
-
-  <div class="service-card">
-    <h2>Steam Bath</h2>
-    <p>Detoxifying heat therapy for respiratory health and relaxation.</p>
-    <ul>
-      <li>Detox</li>
-      <li>Skin rejuvenation</li>
-      <li>Mental relaxation</li>
-    </ul>
-    <p><strong>Duration:</strong> 20 mins</p>
-    <p><strong>Price:</strong> ₹699</p>
-    <a href="booking.html" class="btn">Book Now</a>
-  </div>
-
-  <div class="service-card highlight">
-    <h2>Full Recovery Combo</h2>
-    <p>Ice Bath + Steam + Jacuzzi</p>
-    <p><strong>Duration:</strong> 90 mins</p>
-    <p><strong>Price:</strong> <del>₹2499</del> ₹1999</p>
-    <span class="badge">Best Value</span>
-    <a href="booking.html" class="btn">Book Combo</a>
-  </div>
-
+<section class="services-container" id="servicesContainer">
+  <p style="text-align:center; width:100%; color:#666;">Loading latest prices...</p>
 </section>
 
-<!-- Footer -->
-<footer>
+<footer class="site-footer">
   <p>© 2026 Chill Thrive | Wellness & Recovery</p>
 </footer>
+
+<script type="module">
+  import { db, collection, getDocs } from "./js/firebase.js";
+
+  const container = document.getElementById("servicesContainer");
+
+  // Icon Mapping Helper
+  function getServiceDetails(name) {
+    const n = (name || "").toLowerCase();
+    if (n.includes("ice")) return { icon: "fa-snowflake", color: "#00aaff", desc: "Cold immersion therapy to reduce inflammation." };
+    if (n.includes("jacuzzi")) return { icon: "fa-water", color: "#0077cc", desc: "Warm hydrotherapy for deep muscle relaxation." };
+    if (n.includes("steam")) return { icon: "fa-cloud", color: "#88c0ff", desc: "Detoxifying heat therapy for respiratory health." };
+    if (n.includes("combo")) return { icon: "fa-layer-group", color: "#005fa3", desc: "The ultimate full-body contrast therapy." };
+    return { icon: "fa-spa", color: "#0077cc", desc: "Premium wellness experience." };
+  }
+
+  async function loadServices() {
+    try {
+      const snapshot = await getDocs(collection(db, "services"));
+      
+      if (snapshot.empty) {
+        container.innerHTML = `<p style="text-align:center; width:100%;">No services found. Please go to Admin Panel and click 'Initialize Defaults'.</p>`;
+        return;
+      }
+
+      container.innerHTML = ""; // Clear loader
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const details = getServiceDetails(data.name);
+        
+        // Check if it's a "Combo" to add special styling
+        const isCombo = data.name.toLowerCase().includes("combo");
+        const cardStyle = isCombo ? `border: 2px solid #0077cc; background: #f0f8ff;` : ``;
+        const badge = isCombo ? `<span class="badge" style="background: #0077cc; color: white; padding: 5px 15px; border-radius: 20px; position: absolute; top: -15px; right: 20px; font-size:0.8rem;">Best Value</span>` : ``;
+        
+        // Handle Price Display
+        let priceDisplay = `₹${data.price}`;
+        if(isCombo && data.price) {
+            priceDisplay = `<del style="color: #999; font-size: 1rem;">₹${parseInt(data.price) + 500}</del> ₹${data.price}`;
+        }
+
+        const card = document.createElement("div");
+        card.className = "service-card animate-fade-up";
+        if(isCombo) card.classList.add("highlight");
+        card.style.cssText = cardStyle;
+
+        card.innerHTML = `
+          ${badge}
+          <i class="fas ${details.icon}" style="font-size: 2.5rem; color: ${details.color}; margin-bottom: 15px;"></i>
+          <h2>${data.name}</h2>
+          <p>${details.desc}</p>
+          <p><strong>Duration:</strong> ${data.duration}</p>
+          <p style="font-size: 1.2rem; color: #0077cc; font-weight: bold; margin: 10px 0;">
+            ${priceDisplay}
+          </p>
+          <a href="booking.html" class="btn">Book Now</a>
+        `;
+        
+        container.appendChild(card);
+      });
+
+      // Re-trigger animation observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
+        });
+      });
+      document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = `<p style="text-align:center; color:red;">Error loading services.</p>`;
+    }
+  }
+
+  loadServices();
+</script>
 
 </body>
 </html>

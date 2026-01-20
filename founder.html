@@ -2,32 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chill Thrive | Founder</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
   <a href="awareness.html">Awareness</a>
-  <a href="gallery.html">Gallery</a>
+  <a href="founder.html">Founder</a> <a href="gallery.html">Gallery</a>
   <a href="contact.html">Contact</a>
 </nav>
 
-<!-- Page Header -->
-<header class="page-header">
+<header class="page-header animate-fade-up">
   <h1>Our Founder</h1>
   <p>The vision behind Chill Thrive</p>
 </header>
 
-<!-- Founder Section -->
 <section class="founder-section">
 
-  <div class="founder-card">
+  <div class="founder-card animate-fade-up">
     <img src="assets/images/founder.jpg" alt="Founder Image" />
 
     <div class="founder-content">
@@ -35,7 +34,7 @@
       <p>
         Chill Thrive was founded with a simple belief — recovery is not a luxury,
         it is a necessity. The idea was born from understanding the physical and
-        mental demands of modern life and the need for scientific recovery solutions.
+        mental demands of modern life.
       </p>
 
       <p>
@@ -59,10 +58,18 @@
 
 </section>
 
-<!-- Footer -->
-<footer>
+<footer class="site-footer">
   <p>© 2026 Chill Thrive | Wellness & Recovery</p>
 </footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
+    });
+  });
+  document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>

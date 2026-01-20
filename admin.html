@@ -2,72 +2,251 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard | Chill Thrive</title>
+  <title>Admin Portal | Chill Thrive</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* --- ADMIN STYLES --- */
+    body { background: #f0f2f5; min-height: 100vh; display: flex; }
+    #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0a2540, #0077cc); z-index: 9999; display: flex; justify-content: center; align-items: center; }
+    .login-box { background: white; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); width: 350px; }
+    .login-box input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 6px; }
+    .sidebar { width: 250px; background: #001529; color: white; height: 100vh; position: fixed; left: 0; top: 0; padding: 20px; display: none; z-index: 100; }
+    .sidebar h2 { margin-bottom: 40px; font-size: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+    .sidebar a { display: block; color: #a6adb4; padding: 15px; text-decoration: none; font-size: 1rem; transition: 0.3s; border-radius: 6px; margin-bottom: 5px; cursor: pointer; }
+    .sidebar a:hover, .sidebar a.active { background: #1890ff; color: white; }
+    .sidebar a i { margin-right: 10px; }
+    .main-content { margin-left: 250px; padding: 40px; width: 100%; display: none; }
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .data-table { width: 100%; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-collapse: collapse; margin-bottom: 30px; }
+    .data-table th { background: #fafafa; padding: 20px; text-align: left; font-weight: 600; color: #555; border-bottom: 1px solid #eee; }
+    .data-table td { padding: 20px; border-bottom: 1px solid #eee; color: #333; }
+    .btn-delete { background: #fff1f0; color: #ff4d4f; border: 1px solid #ffa39e; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+    .form-box { background: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+    .form-box input, .form-box select, .form-box textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; }
+  </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-  <a href="index.html">Home</a>
-  <a href="booking.html">Bookings</a>
-</nav>
+  <div id="loginScreen">
+    <div class="login-box">
+      <h2 style="color: #0a2540;">Admin Login</h2>
+      <input type="password" id="passwordInput" placeholder="Enter Password">
+      <button class="btn" onclick="checkLogin()" style="width:100%;">Login</button>
+      <p id="loginError" style="color: red; margin-top: 10px;"></p>
+    </div>
+  </div>
 
-<header class="page-header">
-  <h1>Admin Dashboard</h1>
-  <p>View all customer bookings stored in database</p>
-</header>
+  <div class="sidebar" id="sidebar">
+    <h2><i class="fas fa-bolt"></i> Chill Thrive</h2>
+    <a id="nav-bookings" onclick="showSection('bookings')" class="active"><i class="fas fa-calendar-check"></i> Bookings</a>
+    <a id="nav-services" onclick="showSection('services')"><i class="fas fa-tags"></i> Services & Prices</a>
+    <a id="nav-cms" onclick="showSection('cms')"><i class="fas fa-edit"></i> Manage Awareness</a>
+    <a id="nav-gallery" onclick="showSection('gallery')"><i class="fas fa-images"></i> Gallery</a>
+    <a id="nav-testimonials" onclick="showSection('testimonials')"><i class="fas fa-star"></i> Testimonials</a>
+    <a id="nav-messages" onclick="showSection('messages')"><i class="fas fa-envelope"></i> Inbox</a>
+    
+    <a href="index.html" style="margin-top: 50px; background: rgba(255,255,255,0.1);"><i class="fas fa-sign-out-alt"></i> Back to Website</a>
+  </div>
 
-<section class="booking-section">
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Service</th>
-        <th>Date</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="bookingTable">
-    </tbody>
-  </table>
-</section>
+  <div class="main-content" id="mainContent">
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <div id="section-bookings">
+      <div class="header-bar"><h1>Bookings</h1><button class="btn" onclick="loadBookings()">Refresh</button></div>
+      <table class="data-table"><thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="bookingTable"></tbody></table>
+    </div>
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
-  };
+    <div id="section-services" style="display: none;">
+      <div class="header-bar"><h1>Manage Services</h1><button class="btn" onclick="initDefaultServices()" style="background:#faad14; border:none;">Initialize Defaults</button></div>
+      <div class="form-box" style="display:flex; gap:10px; align-items:end;">
+        <div style="flex:2"><label>Name</label><input id="newServiceName"></div>
+        <div><label>Price</label><input id="newServicePrice"></div>
+        <div><label>Duration</label><input id="newServiceDuration"></div>
+        <button class="btn" onclick="addService()">Add</button>
+      </div>
+      <table class="data-table"><thead><tr><th>Name</th><th>Price</th><th>Duration</th><th>Action</th></tr></thead><tbody id="serviceTable"></tbody></table>
+    </div>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    <div id="section-cms" style="display: none;">
+      <div class="header-bar"><h1>Awareness Content</h1><button class="btn" onclick="initAwarenessDefaults()" style="background:#faad14; border:none;">Load Default Boxes</button></div>
+      <div class="form-box">
+        <h3>Add New Info Box</h3>
+        <input type="text" id="awTitle" placeholder="Title">
+        <textarea id="awDesc" placeholder="Description..." rows="3"></textarea>
+        <div style="display: flex; gap: 10px;">
+          <select id="awIcon" style="flex:1;">
+            <option value="fa-snowflake">Snowflake ❄️</option>
+            <option value="fa-fire">Fire 🔥</option>
+            <option value="fa-temperature-high">Thermometer 🌡️</option>
+            <option value="fa-heartbeat">Health ❤️</option>
+            <option value="fa-brain">Brain 🧠</option>
+            <option value="fa-exclamation-triangle">Warning ⚠️</option>
+          </select>
+          <select id="awType" style="flex:1;">
+            <option value="normal">Normal Style (Blue)</option>
+            <option value="warning">Warning Style (Red)</option>
+          </select>
+          <button class="btn" onclick="addAwarenessCard()" style="flex:1;">Add Box</button>
+        </div>
+      </div>
+      <table class="data-table"><thead><tr><th>Title</th><th>Description</th><th>Type</th><th>Action</th></tr></thead><tbody id="awarenessTable"></tbody></table>
+    </div>
 
-  const table = document.getElementById("bookingTable");
-  const querySnapshot = await getDocs(collection(db, "bookings"));
+    <div id="section-gallery" style="display: none;">
+      <div class="header-bar"><h1>Gallery Manager</h1></div>
+      <div class="form-box">
+        <input type="text" id="newImgUrl" placeholder="Image URL">
+        <button class="btn" onclick="addGalleryImage()">Add Image</button>
+      </div>
+      <table class="data-table"><tbody id="galleryTable"></tbody></table>
+    </div>
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    const row = document.createElement("tr");
+    <div id="section-testimonials" style="display: none;">
+      <div class="header-bar"><h1>Testimonials</h1><button class="btn" onclick="initTestimonialDefaults()" style="background:#faad14; border:none;">Load Defaults</button></div>
+      
+      <div class="form-box" style="display: flex; gap: 10px; align-items: end;">
+        <div style="flex: 1;"><label>Client Name</label><input type="text" id="testName" placeholder="e.g. John Doe"></div>
+        <div style="flex: 2;"><label>Review</label><input type="text" id="testReview" placeholder="e.g. Amazing experience!"></div>
+        <div style="width: 100px;"><label>Stars</label><input type="number" id="testStars" min="1" max="5" value="5"></div>
+        <button class="btn" onclick="addTestimonial()">Add</button>
+      </div>
 
-    row.innerHTML = `
-      <td>${data.name}</td>
-      <td>${data.email}</td>
-      <td>${data.service}</td>
-      <td>${data.date}</td>
-      <td>${data.time}</td>
-    `;
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Review</th><th>Stars</th><th>Action</th></tr></thead>
+        <tbody id="testimonialTable"></tbody>
+      </table>
+    </div>
 
-    table.appendChild(row);
-  });
-</script>
+    <div id="section-messages" style="display: none;">
+      <div class="header-bar"><h1>Inbox</h1><button class="btn" onclick="loadMessages()">Refresh</button></div>
+      <table class="data-table">
+        <thead><tr><th>From</th><th>Email</th><th>Message</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="messageTable"></tbody>
+      </table>
+    </div>
 
+  </div>
+
+  <script type="module">
+    import { db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, setDoc } from "./js/firebase.js";
+
+    // Navigation & Login
+    window.checkLogin = function() {
+      if(document.getElementById("passwordInput").value === "admin123") {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("sidebar").style.display = "block";
+        document.getElementById("mainContent").style.display = "block";
+        loadBookings();
+      } else {
+        document.getElementById("loginError").innerText = "Invalid Password!";
+      }
+    }
+
+    window.showSection = function(id) {
+      document.querySelectorAll('.main-content > div').forEach(div => div.style.display = 'none');
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      document.getElementById("section-" + id).style.display = "block";
+      document.getElementById("nav-" + id).classList.add("active");
+      if(id === 'bookings') loadBookings();
+      if(id === 'services') loadServices();
+      if(id === 'cms') loadAwareness();
+      if(id === 'gallery') loadGallery();
+      if(id === 'testimonials') loadTestimonials();
+      if(id === 'messages') loadMessages();
+    }
+
+    // --- Bookings ---
+    window.loadBookings = async () => {
+      const t = document.getElementById("bookingTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "bookings")); t.innerHTML = "";
+      s.forEach(d => t.innerHTML += `<tr><td>${d.data().name}</td><td>${d.data().service}</td><td>${d.data().date}</td><td>Confirmed</td><td><button class="btn-delete" onclick="del('bookings','${d.id}', loadBookings)">Cancel</button></td></tr>`);
+    }
+
+    // --- Services ---
+    window.loadServices = async () => {
+      const t = document.getElementById("serviceTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "services")); t.innerHTML = "";
+      s.forEach(d => t.innerHTML += `<tr><td>${d.data().name}</td><td>${d.data().price}</td><td>${d.data().duration}</td><td><button class="btn-delete" onclick="del('services','${d.id}', loadServices)">Delete</button></td></tr>`);
+    }
+    window.addService = async () => { await addDoc(collection(db,"services"),{name:document.getElementById("newServiceName").value, price:document.getElementById("newServicePrice").value, duration:document.getElementById("newServiceDuration").value}); loadServices(); }
+    window.initDefaultServices = async () => { await addDoc(collection(db,"services"),{name:"Ice Bath", price:"999", duration:"30m"}); loadServices(); }
+
+    // --- AWARENESS ---
+    window.loadAwareness = async () => {
+      const t = document.getElementById("awarenessTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "awareness_cards")); t.innerHTML = "";
+      if(s.empty) { t.innerHTML = "<tr><td colspan='4'>No boxes. Click 'Load Defaults'.</td></tr>"; return; }
+      s.forEach(d => {
+        const data = d.data();
+        t.innerHTML += `<tr><td><i class="fas ${data.icon}"></i> ${data.title}</td><td>${data.description.substring(0,50)}...</td><td>${data.type}</td><td><button class="btn-delete" onclick="del('awareness_cards','${d.id}', loadAwareness)">Delete</button></td></tr>`;
+      });
+    }
+    window.addAwarenessCard = async () => {
+      const title = document.getElementById("awTitle").value;
+      const desc = document.getElementById("awDesc").value;
+      const icon = document.getElementById("awIcon").value;
+      const type = document.getElementById("awType").value;
+      if(title) { await addDoc(collection(db, "awareness_cards"), { title, description: desc, icon, type }); loadAwareness(); }
+    }
+    window.initAwarenessDefaults = async () => {
+      const defaults = [
+        { title: "What is Cold Therapy?", description: "Cold therapy involves exposing the body to cold temperatures to reduce inflammation.", icon: "fa-snowflake", type: "normal" },
+        { title: "Who Should Avoid?", description: "Heart conditions or high blood pressure.", icon: "fa-exclamation-triangle", type: "warning" }
+      ];
+      for(const box of defaults) await addDoc(collection(db, "awareness_cards"), box);
+      loadAwareness();
+    }
+
+    // --- GALLERY ---
+    window.loadGallery = async () => {
+      const t = document.getElementById("galleryTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "gallery")); t.innerHTML = "";
+      s.forEach(d => t.innerHTML += `<tr><td><img src="${d.data().url}" height="50"></td><td><button class="btn-delete" onclick="del('gallery','${d.id}', loadGallery)">Remove</button></td></tr>`);
+    }
+    window.addGalleryImage = async () => { await addDoc(collection(db,"gallery"),{url:document.getElementById("newImgUrl").value}); loadGallery(); }
+
+    // --- TESTIMONIALS (NEW!) ---
+    window.loadTestimonials = async () => {
+      const t = document.getElementById("testimonialTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "testimonials")); t.innerHTML = "";
+      if(s.empty) { t.innerHTML = "<tr><td colspan='4'>No reviews. Click 'Load Defaults'.</td></tr>"; return; }
+      s.forEach(d => {
+        const data = d.data();
+        t.innerHTML += `<tr><td>${data.name}</td><td>${data.review}</td><td>${data.stars} ⭐</td><td><button class="btn-delete" onclick="del('testimonials','${d.id}', loadTestimonials)">Delete</button></td></tr>`;
+      });
+    }
+    window.addTestimonial = async () => {
+      const name = document.getElementById("testName").value;
+      const review = document.getElementById("testReview").value;
+      const stars = document.getElementById("testStars").value;
+      if(name && review) { await addDoc(collection(db, "testimonials"), { name, review, stars }); loadTestimonials(); }
+    }
+    window.initTestimonialDefaults = async () => {
+        await addDoc(collection(db, "testimonials"), { name: "Sarah J.", review: "The best recovery experience in the city!", stars: "5" });
+        await addDoc(collection(db, "testimonials"), { name: "Mike T.", review: "Ice baths changed my life.", stars: "5" });
+        loadTestimonials();
+    }
+
+    // --- MESSAGES ---
+    window.loadMessages = async () => {
+      const t = document.getElementById("messageTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "messages")); t.innerHTML = "";
+      if(s.empty) { t.innerHTML = "<tr><td colspan='5'>No messages found.</td></tr>"; return; }
+      s.forEach(d => {
+        const data = d.data();
+        t.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.message}</td><td>${data.date}</td><td><button class="btn-delete" onclick="del('messages','${d.id}', loadMessages)">Delete</button></td></tr>`;
+      });
+    }
+
+    // --- Global Delete ---
+    window.del = async (col, id, reloadFunc) => { if(confirm("Delete item?")) { await deleteDoc(doc(db, col, id)); reloadFunc(); } }
+
+    // Exports
+    window.del = del; window.addAwarenessCard = addAwarenessCard; window.initAwarenessDefaults = initAwarenessDefaults;
+    window.addService = addService; window.initDefaultServices = initDefaultServices; window.addGalleryImage = addGalleryImage;
+    window.loadMessages = loadMessages; window.addTestimonial = addTestimonial; window.initTestimonialDefaults = initTestimonialDefaults;
+  </script>
 </body>
 </html>

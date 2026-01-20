@@ -4,72 +4,85 @@
   <meta charset="UTF-8" />
   <title>Chill Thrive | Awareness</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
   <a href="awareness.html">Awareness</a>
+  <a href="founder.html">Founder</a>
   <a href="gallery.html">Gallery</a>
   <a href="contact.html">Contact</a>
 </nav>
 
-<!-- Page Header -->
-<header class="page-header">
+<header class="page-header animate-fade-up">
   <h1>Recovery Awareness</h1>
-  <p>Understanding cold and heat therapy for better health and performance.</p>
+  <p>Understanding cold and heat therapy for better health.</p>
 </header>
 
-<!-- Awareness Content -->
-<section class="content-section">
-
-  <div class="content-card">
-    <h2>What is Cold Therapy?</h2>
-    <p>
-      Cold therapy involves exposing the body to cold temperatures to reduce
-      inflammation, relieve muscle soreness, and enhance recovery.
-      Ice baths are commonly used by athletes and wellness enthusiasts.
-    </p>
-  </div>
-
-  <div class="content-card">
-    <h2>Science Behind Ice Baths</h2>
-    <p>
-      Cold exposure helps constrict blood vessels, reducing swelling and
-      flushing out metabolic waste. After the session, blood flow increases,
-      delivering oxygen and nutrients to muscles.
-    </p>
-  </div>
-
-  <div class="content-card">
-    <h2>Heat vs Cold Therapy</h2>
-    <p>
-      Heat therapy relaxes muscles and improves circulation, while cold therapy
-      reduces inflammation and pain. Using both together can provide complete
-      recovery and relaxation benefits.
-    </p>
-  </div>
-
-  <div class="content-card warning">
-    <h2>Who Should Avoid Ice Baths?</h2>
-    <p>
-      Individuals with heart conditions, high blood pressure, or respiratory
-      issues should consult a medical professional before trying cold therapy.
-    </p>
-    <p><strong>Medical Disclaimer:</strong> This content is for educational
-      purposes only and not medical advice.</p>
-  </div>
-
+<section class="content-section" id="awarenessContainer">
+  <p style="text-align:center; width:100%; color:#666;">Loading knowledge base...</p>
 </section>
 
-<!-- Footer -->
-<footer>
+<footer class="site-footer">
   <p>© 2026 Chill Thrive | Wellness & Recovery</p>
 </footer>
+
+<script type="module">
+  import { db, collection, getDocs } from "./js/firebase.js";
+
+  const container = document.getElementById("awarenessContainer");
+
+  async function loadAwareness() {
+    try {
+      const snapshot = await getDocs(collection(db, "awareness_cards"));
+      
+      if (snapshot.empty) {
+        container.innerHTML = `<p style="text-align:center; width:100%;">No content found. Please go to Admin Panel > Awareness > Click 'Load Default Boxes'.</p>`;
+        return;
+      }
+
+      container.innerHTML = ""; // Clear loader
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        
+        // Handle "Warning" style vs "Normal" style
+        const isWarning = data.type === 'warning';
+        const cardClass = isWarning ? 'content-card warning animate-fade-up' : 'content-card animate-fade-up';
+        const borderStyle = isWarning ? 'border-left: 5px solid #ff4d4d;' : '';
+        const iconColor = isWarning ? '#ff4d4d' : '#0077cc';
+        
+        const card = document.createElement("div");
+        card.className = cardClass;
+        if(isWarning) card.style.borderLeft = "5px solid #ff4d4d";
+
+        card.innerHTML = `
+          <i class="fas ${data.icon}" style="font-size: 2rem; color: ${iconColor}; margin-bottom: 10px;"></i>
+          <h2>${data.title}</h2>
+          <p>${data.description}</p>
+        `;
+        
+        container.appendChild(card);
+      });
+
+      // Animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
+      });
+      document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = "Error loading content.";
+    }
+  }
+  loadAwareness();
+</script>
 
 </body>
 </html>

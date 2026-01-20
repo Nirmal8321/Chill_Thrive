@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <title>Chill Thrive | Contact</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-<nav class="navbar">
+<nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
@@ -18,35 +19,78 @@
   <a href="contact.html">Contact</a>
 </nav>
 
-<header class="page-header">
+<header class="page-header animate-fade-up">
   <h1>Contact Us</h1>
   <p>We’d love to hear from you. Get in touch with Chill Thrive.</p>
 </header>
 
 <section class="contact-section">
 
-  <div class="contact-info">
+  <div class="contact-info card animate-fade-up">
     <h2>Reach Us</h2>
-    <p><strong>Email:</strong> chillthrive@gmail.com</p>
-    <p><strong>Phone:</strong> +91 98765 43210</p>
-    <p><strong>Location:</strong> Surat, Gujarat, India</p>
+    <div style="margin-top:20px;">
+        <p><i class="fas fa-envelope" style="color:#0077cc; margin-right:10px;"></i> chillthrive@gmail.com</p>
+        <p><i class="fas fa-phone" style="color:#0077cc; margin-right:10px;"></i> +91 98765 43210</p>
+        <p><i class="fas fa-map-marker-alt" style="color:#0077cc; margin-right:10px;"></i> Surat, Gujarat, India</p>
+    </div>
   </div>
 
-  <form class="contact-form">
+  <form class="contact-form card animate-fade-up" id="contactForm">
     <h2>Send a Message</h2>
 
-    <input type="text" placeholder="Your Name" required />
-    <input type="email" placeholder="Your Email" required />
-    <textarea placeholder="Your Message" rows="5" required></textarea>
+    <input type="text" id="msgName" placeholder="Your Name" required />
+    <input type="email" id="msgEmail" placeholder="Your Email" required />
+    <textarea id="msgContent" placeholder="Your Message" rows="5" required></textarea>
 
-    <button class="btn" type="submit">Send Message</button>
+    <button class="btn" type="submit" style="width:100%;">Send Message</button>
+    <p id="formStatus" style="margin-top:10px; text-align:center; font-weight:bold;"></p>
   </form>
 
 </section>
 
-<footer>
+<footer class="site-footer">
   <p>© 2026 Chill Thrive | Wellness & Recovery</p>
 </footer>
+
+<script type="module">
+  import { db, collection, addDoc } from "./js/firebase.js";
+
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("formStatus");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    status.innerText = "Sending...";
+    status.style.color = "#0077cc";
+
+    const name = document.getElementById("msgName").value;
+    const email = document.getElementById("msgEmail").value;
+    const message = document.getElementById("msgContent").value;
+
+    try {
+      await addDoc(collection(db, "messages"), {
+        name: name,
+        email: email,
+        message: message,
+        date: new Date().toLocaleString()
+      });
+
+      status.innerText = "Message Sent Successfully!";
+      status.style.color = "green";
+      form.reset();
+    } catch (error) {
+      console.error("Error:", error);
+      status.innerText = "Error sending message. Try again.";
+      status.style.color = "red";
+    }
+  });
+
+  // Animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
+  });
+  document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
