@@ -20,13 +20,13 @@
   <a href="contact.html">Contact</a>
 </nav>
 
-<header class="page-header animate-fade-up">
-  <h1>Gallery</h1>
-  <p>Moments from our recovery sessions & wellness experiences.</p>
+<header class="page-header header-gallery animate-fade-up">
+  <h1>Our Gallery</h1>
+  <p>Explore moments from our recovery sessions. Hover to play videos.</p>
 </header>
 
-<section class="gallery-section" id="galleryContainer">
-  <p style="text-align:center; width:100%; color:#666;">Loading gallery images...</p>
+<section class="gallery-grid" id="galleryContainer">
+  <p style="text-align:center; width:100%; grid-column: 1/-1; color:#666;">Loading gallery...</p>
 </section>
 
 <footer class="site-footer">
@@ -38,43 +38,114 @@
 
   const container = document.getElementById("galleryContainer");
 
+  // --- HELPER: DETECT MEDIA TYPE ---
+  function getMediaHTML(url, id) {
+      // 1. Check for Direct Video File (MP4, WebM, OGG)
+      // FIX: Added 'muted', 'preload', and explicit styling to prevent black screen
+      if (url.match(/\.(mp4|webm|ogg)$/i)) {
+          return `
+            <video 
+                src="${url}" 
+                muted 
+                loop 
+                playsinline 
+                preload="auto"
+                onmouseenter="this.play()" 
+                onmouseleave="this.pause()" 
+                style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; background: #000;">
+            </video>`;
+      }
+      
+      // 2. Check for YouTube
+      if (url.includes("youtube.com") || url.includes("youtu.be")) {
+          let vId = "";
+          // Robust ID extraction
+          if (url.includes("watch?v=")) vId = url.split("v=")[1].split("&")[0];
+          else if (url.includes("youtu.be")) vId = url.split("/").pop();
+          else if (url.includes("embed")) vId = url.split("/").pop();
+
+          // Returns a Thumbnail first. Hover swaps it to Iframe.
+          // FIX: Added a unique ID container to handle the swap smoothly
+          return `
+            <div id="yt-container-${id}" style="width:100%; height:100%; position:relative; cursor:pointer; background:#000;"
+                 onmouseenter="playYT('${id}', '${vId}')" 
+                 onmouseleave="stopYT('${id}', '${vId}')">
+                 
+                <img src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" 
+                     style="width:100%; height:100%; object-fit:cover; opacity:0.8;" 
+                     alt="Video Thumb">
+                
+                <div class="play-overlay" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; background:rgba(0,0,0,0.6); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+          `;
+      }
+
+      // 3. Default to Image
+      return `<img src="${url}" alt="Gallery Image" style="width:100%; height:100%; object-fit:cover;">`;
+  }
+
+  // --- GLOBAL FUNCTIONS FOR YOUTUBE HOVER ---
+  window.playYT = (id, vId) => {
+      const el = document.getElementById(`yt-container-${id}`);
+      if(!el) return;
+      
+      // FIX: Added 'mute=1' and 'autoplay=1' strictly. 
+      // Replaced innerHTML with iframe
+      el.innerHTML = `
+        <iframe width="100%" height="100%" 
+        src="https://www.youtube.com/embed/${vId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0" 
+        frameborder="0" allow="autoplay; encrypted-media" 
+        style="pointer-events: none;"></iframe>`; 
+        // pointer-events: none prevents the iframe from stealing the mouseleave event
+  };
+
+  window.stopYT = (id, vId) => {
+      const el = document.getElementById(`yt-container-${id}`);
+      if(!el) return;
+
+      // Restore Thumbnail when mouse leaves
+      el.innerHTML = `
+        <img src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" 
+             style="width:100%; height:100%; object-fit:cover; opacity:0.8;" 
+             alt="Video Thumb">
+        <div class="play-overlay" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; background:rgba(0,0,0,0.6); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
+            <i class="fas fa-play"></i>
+        </div>`;
+  };
+
   async function loadGallery() {
     try {
       const snapshot = await getDocs(collection(db, "gallery"));
       
       if (snapshot.empty) {
-        container.innerHTML = `<p style="text-align:center; width:100%;">No images found. Add some from the Admin Panel!</p>`;
+        container.innerHTML = `<p style="text-align:center; width:100%; grid-column:1/-1;">No items found. Add some in Admin!</p>`;
         return;
       }
 
-      container.innerHTML = ""; // Clear loader
+      container.innerHTML = ""; 
 
       snapshot.forEach(doc => {
         const data = doc.data();
-        const img = document.createElement("img");
-        img.src = data.url;
-        img.alt = "Gallery Image";
-        img.classList.add("animate-fade-up"); // Add animation
+        const item = document.createElement("div");
+        item.className = "gallery-item animate-fade-up"; 
         
-        // Handle image loading error
-        img.onerror = function() {
-            this.style.display = 'none';
-        };
+        // Generate HTML based on Image or Video
+        item.innerHTML = getMediaHTML(data.url, doc.id);
         
-        container.appendChild(img);
+        container.appendChild(item);
       });
 
-      // Animation Observer
+      // Animations
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
-        });
+        entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
       });
       document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
 
     } catch (err) {
       console.error(err);
-      container.innerHTML = "Error loading gallery.";
+      container.innerHTML = `<p style="color:red;">Error loading gallery.</p>`;
     }
   }
   loadGallery();

@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chill Thrive | Services</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -20,92 +19,104 @@
   <a href="contact.html">Contact</a>
 </nav>
 
-<header class="page-header animate-fade-up">
+<header class="page-header header-services animate-fade-up">
   <h1>Our Services</h1>
-  <p>Science-backed recovery experiences designed for performance.</p>
+  <p>Hover over a card to preview the experience.</p>
 </header>
 
 <section class="services-container" id="servicesContainer">
-  <p style="text-align:center; width:100%; color:#666;">Loading latest prices...</p>
+  <p style="text-align:center; width:100%; color:#666;">Loading...</p>
 </section>
 
-<footer class="site-footer">
-  <p>© 2026 Chill Thrive | Wellness & Recovery</p>
-</footer>
+<footer class="site-footer"><p>© 2026 Chill Thrive</p></footer>
 
 <script type="module">
   import { db, collection, getDocs } from "./js/firebase.js";
 
   const container = document.getElementById("servicesContainer");
 
-  // Icon Mapping Helper
-  function getServiceDetails(name) {
+  function getDetails(name) {
     const n = (name || "").toLowerCase();
-    if (n.includes("ice")) return { icon: "fa-snowflake", color: "#00aaff", desc: "Cold immersion therapy to reduce inflammation." };
-    if (n.includes("jacuzzi")) return { icon: "fa-water", color: "#0077cc", desc: "Warm hydrotherapy for deep muscle relaxation." };
-    if (n.includes("steam")) return { icon: "fa-cloud", color: "#88c0ff", desc: "Detoxifying heat therapy for respiratory health." };
-    if (n.includes("combo")) return { icon: "fa-layer-group", color: "#005fa3", desc: "The ultimate full-body contrast therapy." };
-    return { icon: "fa-spa", color: "#0077cc", desc: "Premium wellness experience." };
+    if(n.includes("ice")) return {icon:"fa-snowflake", color:"#00aaff"};
+    if(n.includes("fire") || n.includes("steam")) return {icon:"fa-fire", color:"#ff4d4d"};
+    if(n.includes("water") || n.includes("jacuzzi")) return {icon:"fa-water", color:"#0077cc"};
+    return {icon:"fa-spa", color:"#0077cc"};
+  }
+
+  // --- SMART PLAYER GENERATOR ---
+  function getVideoHTML(url) {
+    if (!url) return "";
+
+    // 1. YouTube Handling (Uses Iframe)
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      let embedUrl = url;
+      if (url.includes("watch?v=")) embedUrl = "https://www.youtube.com/embed/" + url.split("v=")[1].split("&")[0];
+      else if (url.includes("youtu.be")) embedUrl = "https://www.youtube.com/embed/" + url.split("/").pop();
+      
+      return `<iframe width="100%" height="100%" src="${embedUrl}?autoplay=1&mute=1&controls=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+    } 
+    
+    // 2. Direct File Handling (Uses Video Tag - FIXES DOWNLOAD ISSUE)
+    // This forces the browser to PLAY the file instead of downloading it.
+    else {
+      return `<video width="100%" height="100%" src="${url}" autoplay muted loop playsinline style="object-fit: cover; background: black;"></video>`;
+    }
   }
 
   async function loadServices() {
     try {
       const snapshot = await getDocs(collection(db, "services"));
-      
-      if (snapshot.empty) {
-        container.innerHTML = `<p style="text-align:center; width:100%;">No services found. Please go to Admin Panel and click 'Initialize Defaults'.</p>`;
-        return;
-      }
-
-      container.innerHTML = ""; // Clear loader
+      container.innerHTML = ""; 
 
       snapshot.forEach(doc => {
         const data = doc.data();
-        const details = getServiceDetails(data.name);
-        
-        // Check if it's a "Combo" to add special styling
-        const isCombo = data.name.toLowerCase().includes("combo");
-        const cardStyle = isCombo ? `border: 2px solid #0077cc; background: #f0f8ff;` : ``;
-        const badge = isCombo ? `<span class="badge" style="background: #0077cc; color: white; padding: 5px 15px; border-radius: 20px; position: absolute; top: -15px; right: 20px; font-size:0.8rem;">Best Value</span>` : ``;
-        
-        // Handle Price Display
-        let priceDisplay = `₹${data.price}`;
-        if(isCombo && data.price) {
-            priceDisplay = `<del style="color: #999; font-size: 1rem;">₹${parseInt(data.price) + 500}</del> ₹${data.price}`;
-        }
+        const details = getDetails(data.name);
+        const uniqueId = `vid-${doc.id}`;
 
         const card = document.createElement("div");
         card.className = "service-card animate-fade-up";
-        if(isCombo) card.classList.add("highlight");
-        card.style.cssText = cardStyle;
+        
+        // --- HOVER LOGIC ---
+        if(data.videoUrl) {
+            card.onmouseenter = () => {
+                const slot = document.getElementById(uniqueId);
+                // Dynamically decide between YouTube or MP4
+                slot.innerHTML = getVideoHTML(data.videoUrl);
+            };
+            card.onmouseleave = () => {
+                const slot = document.getElementById(uniqueId);
+                // Reset to Icon on leave
+                slot.innerHTML = `<i class="fas ${details.icon}" style="font-size: 4rem; color: ${details.color}; transition:transform 0.3s;"></i>`;
+            };
+        }
 
         card.innerHTML = `
-          ${badge}
-          <i class="fas ${details.icon}" style="font-size: 2.5rem; color: ${details.color}; margin-bottom: 15px;"></i>
-          <h2>${data.name}</h2>
-          <p>${details.desc}</p>
-          <p><strong>Duration:</strong> ${data.duration}</p>
-          <p style="font-size: 1.2rem; color: #0077cc; font-weight: bold; margin: 10px 0;">
-            ${priceDisplay}
-          </p>
-          <a href="booking.html" class="btn">Book Now</a>
+          <div id="${uniqueId}" class="media-slot">
+             <i class="fas ${details.icon}" style="font-size: 4rem; color: ${details.color};"></i>
+          </div>
+
+          <div class="card-content">
+            <div>
+                <h2 style="font-size:1.5rem; margin-bottom:5px;">${data.name}</h2>
+                <p style="color:#666; font-size:0.9rem;">Duration: ${data.duration}</p>
+            </div>
+            
+            <div style="margin-top:20px;">
+                <h3 style="color:#0077cc; margin-bottom:10px;">₹${data.price}</h3>
+                <a href="booking.html" class="btn" style="width:100%; display:block;">Book Session</a>
+            </div>
+          </div>
         `;
-        
         container.appendChild(card);
       });
-
-      // Re-trigger animation observer
+      
+      // Animations
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
-        });
+        entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
       });
       document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
 
-    } catch (err) {
-      console.error(err);
-      container.innerHTML = `<p style="text-align:center; color:red;">Error loading services.</p>`;
-    }
+    } catch(e) { console.error(e); }
   }
 
   loadServices();

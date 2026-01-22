@@ -10,10 +10,53 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    .hero { position: relative; overflow: hidden; }
-    #recoveryCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-    .hero-content { position: relative; z-index: 2; }
-    .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 20, 40, 0.7); z-index: 0; }
+    /* --- HOME PAGE SPECIFIC STYLES --- */
+    
+    /* 1. Hero Section overrides */
+    .hero { 
+      position: relative; 
+      overflow: hidden; 
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      /* Deep Premium Gradient */
+      background: radial-gradient(circle at center, #0a2540 0%, #001529 100%);
+      color: white;
+    }
+
+    /* 2. Canvas Setup */
+    #recoveryCanvas { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      z-index: 1; 
+      pointer-events: none; 
+    }
+
+    .hero-content { 
+      position: relative; 
+      z-index: 2; 
+      max-width: 900px;
+      padding: 20px;
+    }
+
+    /* 3. Section Spacing */
+    .section-padding {
+      padding: 100px 20px;
+    }
+    
+    /* 4. The Grid Layout */
+    .grid-container {
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+      gap: 40px; 
+      max-width: 1200px; 
+      margin: 0 auto;
+    }
   </style>
 </head>
 
@@ -31,196 +74,271 @@
 
 <header class="hero">
   <canvas id="recoveryCanvas"></canvas>
+  
   <div class="hero-content animate-fade-up">
-    <h1>Welcome to Chill Thrive</h1>
-    <p>Rejuvenate your body. Reset your mind.</p>
-    <div class="hero-buttons">
+    <h1 style="font-size: 4rem; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+      Welcome to Chill Thrive
+    </h1>
+    <p style="font-size: 1.4rem; opacity: 0.9; margin-bottom: 40px;">
+      Rejuvenate your body. Reset your mind. Experience the power of contrast therapy.
+    </p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
       <a href="booking.html" class="btn">Book a Session</a>
-      <a href="services.html" class="btn outline">Explore Services</a>
+      <a href="services.html" class="btn" style="background: transparent; border: 2px solid white; box-shadow: none;">
+        Explore Services
+      </a>
     </div>
   </div>
 </header>
 
-<section class="services-preview">
-  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
-    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-      <i class="fas fa-snowflake" style="font-size: 2.5rem; color: #00aaff;"></i>
-    </div>
-    <h2>Ice Bath</h2>
-    <p>Boost immunity & reduce inflammation with sub-zero recovery.</p>
-    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
-  </a>
-
-  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
-    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-      <i class="fas fa-hot-tub" style="font-size: 2.5rem; color: #0077cc;"></i>
-    </div>
-    <h2>Jacuzzi Therapy</h2>
-    <p>Deep muscle relaxation with high-pressure hydrotherapy.</p>
-    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
-  </a>
-
-  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
-    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-      <i class="fas fa-wind" style="font-size: 2.5rem; color: #88c0ff;"></i>
-    </div>
-    <h2>Steam Bath</h2>
-    <p>Detoxify your skin and improve respiratory health.</p>
-    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">Learn More &rarr;</span>
-  </a>
-
-  <a href="services.html" class="card animate-fade-up" style="text-decoration: none; text-align: center;">
-    <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-      <i class="fas fa-layer-group" style="font-size: 2.5rem; color: #005fa3;"></i>
-    </div>
-    <h2>Combo Therapy</h2>
-    <p>The ultimate contrast therapy for peak performance.</p>
-    <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">View Package &rarr;</span>
-  </a>
-</section>
-
-<section class="content-section" style="background: transparent;">
-  <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 20px;">
-    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Why Chill Thrive?</h2>
-    <p style="color: var(--text-gray);">We combine science and comfort for your recovery.</p>
+<section class="section-padding" style="background: #f9fcff;">
+  <div style="text-align: center; margin-bottom: 60px;" class="animate-fade-up">
+    <h2 style="font-size: 3rem; color: #0077cc; margin-bottom: 10px;">Our Services</h2>
+    <p style="color: #666; font-size: 1.2rem;">Experience world-class recovery therapies.</p>
   </div>
-
-  <div class="content-card animate-fade-up" style="text-align: center;">
-    <i class="fas fa-flask" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
-    <h3>Science-Backed</h3>
-    <p>Protocols designed to optimize physical and mental recovery.</p>
+  
+  <div id="homeServicesWrapper" class="grid-container">
+    <p style="text-align: center; width: 100%;">Loading services...</p>
   </div>
-
-  <div class="content-card animate-fade-up" style="text-align: center;">
-    <i class="fas fa-user-md" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
-    <h3>Trained Professionals</h3>
-    <p>Guided sessions by experts to ensure safety and effectiveness.</p>
-  </div>
-
-  <div class="content-card animate-fade-up" style="text-align: center;">
-    <i class="fas fa-pump-soap" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
-    <h3>Hygienic & Premium</h3>
-    <p>State-of-the-art filtration and daily sanitization.</p>
-  </div>
-
-  <div class="content-card animate-fade-up" style="text-align: center;">
-    <i class="fas fa-users" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
-    <h3>Community Driven</h3>
-    <p>Join a like-minded community focused on growth and wellness.</p>
+  
+  <div style="text-align: center; margin-top: 50px;">
+    <a href="services.html" class="btn" style="background: transparent; border: 2px solid #0077cc; color: #0077cc;">
+      View All Services &rarr;
+    </a>
   </div>
 </section>
 
-<section class="services-container" style="padding-top: 0;" id="testimonialContainer">
-  <div style="grid-column: 1 / -1; text-align: center;">
-    <h2 style="font-size: 2.5rem;">What Our Members Say</h2>
-    <p>Loading reviews...</p>
+<section class="section-padding" style="position: relative; color: white; overflow: hidden;">
+  
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0a2540 0%, #001529 100%); z-index: -2;"></div>
+  <div style="position: absolute; top: -10%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 119, 204, 0.2), transparent 70%); border-radius: 50%; z-index: -1;"></div>
+  <div style="position: absolute; bottom: -10%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 210, 255, 0.1), transparent 70%); border-radius: 50%; z-index: -1;"></div>
+
+  <div style="text-align: center; margin-bottom: 60px; position: relative; z-index: 2;" class="animate-fade-up">
+    <h2 style="color: #00d2ff; font-size: 3rem; margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">Why Choose Us?</h2>
+    <p style="color: #cfd8dc; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+      We combine advanced recovery science with premium comfort.
+    </p>
+  </div>
+
+  <div class="grid-container" style="position: relative; z-index: 2;">
+    <div class="card animate-fade-up" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+      <i class="fas fa-flask" style="font-size: 2.5rem; color: #00d2ff; margin-bottom: 20px;"></i>
+      <h3 style="color: white;">Science-Backed</h3>
+      <p style="color: #b0bec5;">Protocols designed by experts to optimize physical recovery and boost mental resilience.</p>
+    </div>
+
+    <div class="card animate-fade-up" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+      <i class="fas fa-user-md" style="font-size: 2.5rem; color: #00d2ff; margin-bottom: 20px;"></i>
+      <h3 style="color: white;">Expert Guidance</h3>
+      <p style="color: #b0bec5;">Every session is monitored by trained recovery specialists to ensure your safety.</p>
+    </div>
+
+    <div class="card animate-fade-up" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+      <i class="fas fa-pump-soap" style="font-size: 2.5rem; color: #00d2ff; margin-bottom: 20px;"></i>
+      <h3 style="color: white;">Ultra Hygienic</h3>
+      <p style="color: #b0bec5;">Hospital-grade filtration and daily sanitation ensure a pristine environment.</p>
+    </div>
   </div>
 </section>
 
-<section style="text-align: center; padding: 100px 20px; background: linear-gradient(135deg, #0077cc, #005fa3); color: white;">
-  <h2 class="animate-fade-up" style="font-size: 3rem; margin-bottom: 20px;">Start Your Recovery Journey Today</h2>
-  <p class="animate-fade-up" style="margin-bottom: 40px; font-size: 1.3rem; opacity: 0.9;">Book your first session and feel the difference.</p>
-  <a href="booking.html" class="btn animate-fade-up" style="background: white; color: #0077cc; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">Book Now</a>
+<section class="section-padding" id="testimonialContainer" style="background: white;">
+  <div style="text-align: center; width: 100%;">
+    <h2 style="font-size: 3rem; color: #0077cc;">What Members Say</h2>
+    <p style="color: #666;">Loading reviews...</p>
+  </div>
+</section>
+
+<section style="padding: 80px 20px; background: #f0f7ff; text-align: center;">
+  <div class="animate-fade-up">
+    <h2 style="color: #0077cc; margin-bottom: 20px;">Meet The Founder</h2>
+    <p style="max-width: 700px; margin: 0 auto 30px; font-size: 1.1rem; color: #555;">
+      "Recovery is not a luxury. It's a necessity. I started Chill Thrive to bring professional healing to everyone."
+    </p>
+    <a href="founder.html" class="btn" style="background: white; color: #0077cc; border: 1px solid #0077cc;">Read Our Story</a>
+  </div>
 </section>
 
 <footer class="site-footer">
-  <div class="footer-content">
-    <h3 style="margin-bottom: 15px;">Chill Thrive</h3>
-    <p style="opacity: 0.8;">Where Recovery Meets Resilience.</p>
-    <div class="footer-links" style="margin: 30px 0; display: flex; justify-content: center; gap: 20px;">
-      <a href="services.html" style="color: white; text-decoration: none;">Services</a>
-      <a href="booking.html" style="color: white; text-decoration: none;">Book</a>
-      <a href="awareness.html" style="color: white; text-decoration: none;">Awareness</a>
-      <a href="contact.html" style="color: white; text-decoration: none;">Contact</a>
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Ready to Thrive?</h2>
+    <p style="margin-bottom: 30px; font-size: 1.2rem; opacity: 0.8;">Book your first session today and feel the difference.</p>
+    <a href="booking.html" class="btn" style="background: white; color: #0a1e30; font-weight: 800;">Book Now</a>
+    
+    <div style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; padding-top: 20px; font-size: 0.9rem; opacity: 0.6;">
+      <p>&copy; 2026 Chill Thrive | Wellness & Recovery</p>
     </div>
-    <p class="copyright" style="font-size: 0.9rem; opacity: 0.6;">© 2026 Chill Thrive. All rights reserved.</p>
   </div>
 </footer>
 
 <script type="module">
   import { db, collection, getDocs } from "./js/firebase.js";
 
-  // --- Particle Animation ---
-  const canvas = document.getElementById('recoveryCanvas');
-  const ctx = canvas.getContext('2d');
-  let particlesArray;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-  const mouse = { x: null, y: null, radius: 150 }
-  window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
-  class Particle {
-      constructor(x, y, directionX, directionY, size, color) {
-          this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
-      }
-      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = '#ffffff'; ctx.fill(); }
-      update() {
-          if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-          if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-          this.x += this.directionX; this.y += this.directionY;
-          this.draw();
-      }
-  }
-  function init() {
-      particlesArray = [];
-      let numberOfParticles = (canvas.height * canvas.width) / 9000;
-      for (let i = 0; i < numberOfParticles; i++) {
-          let size = (Math.random() * 3) + 1;
-          let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-          let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-          let directionX = (Math.random() * 1) - 0.5; let directionY = (Math.random() * 1) - 0.5;
-          particlesArray.push(new Particle(x, y, directionX, directionY, size, '#ffffff'));
-      }
-  }
-  function animate() {
-      requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
-      connect();
-  }
-  function connect() {
-      for (let a = 0; a < particlesArray.length; a++) {
-          let dx = particlesArray[a].x - mouse.x; let dy = particlesArray[a].y - mouse.y; let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < mouse.radius) { ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
-      }
-  }
-  init(); animate();
+  // --- A. LOAD SERVICES DYNAMICALLY ---
+  async function loadHomeServices() {
+    const wrapper = document.getElementById("homeServicesWrapper");
+    try {
+        const snapshot = await getDocs(collection(db, "services"));
+        
+        if(snapshot.empty) {
+            wrapper.innerHTML = `<p style="text-align:center;">No services found. Add some in Admin!</p>`;
+            return;
+        }
 
-  // --- Load Testimonials Dynamically ---
+        wrapper.innerHTML = ""; // Clear loader
+        
+        const getIcon = (name) => {
+            const n = name.toLowerCase();
+            if(n.includes('ice')) return 'fa-snowflake';
+            if(n.includes('heat') || n.includes('steam')) return 'fa-fire';
+            if(n.includes('water') || n.includes('jacuzzi')) return 'fa-water';
+            return 'fa-spa';
+        };
+
+        let count = 0;
+        snapshot.forEach(doc => {
+            if(count >= 3) return; // Limit to 3 cards for Home Page
+            const data = doc.data();
+            const icon = getIcon(data.name);
+
+            // We use the "card" class here for the Glass Look (Not the video look)
+            const card = document.createElement("div");
+            card.className = "card animate-fade-up";
+            card.style.textAlign = "center";
+            
+            card.innerHTML = `
+                <div style="background: rgba(0, 119, 204, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas ${icon}" style="font-size: 2.5rem; color: #0077cc;"></i>
+                </div>
+                <h2>${data.name}</h2>
+                <p>Duration: ${data.duration}</p>
+                <p style="color: #0077cc; font-weight: bold; font-size: 1.2rem;">₹${data.price}</p>
+            `;
+            wrapper.appendChild(card);
+            count++;
+        });
+
+    } catch(err) { console.error(err); }
+  }
+
+  // --- B. LOAD TESTIMONIALS ---
   async function loadTestimonials() {
     const container = document.getElementById("testimonialContainer");
     try {
         const s = await getDocs(collection(db, "testimonials"));
         if(s.empty) {
-            container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center;"><h2>What Our Members Say</h2><p>No reviews yet. Check back soon!</p></div>`;
+            container.innerHTML = `<div style="text-align: center;"><h2>What Members Say</h2><p>No reviews yet.</p></div>`;
             return;
         }
-
-        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center;"><h2 style="font-size: 2.5rem;">What Our Members Say</h2></div>`;
         
+        container.innerHTML = `<div style="text-align: center; margin-bottom: 40px;"><h2 style="font-size: 3rem; color:#0077cc;">What Members Say</h2></div>`;
+        
+        const gridDiv = document.createElement("div");
+        gridDiv.className = "grid-container";
+
         s.forEach(doc => {
             const data = doc.data();
-            let starsHtml = "";
-            for(let i=0; i<data.stars; i++) starsHtml += `<i class="fas fa-star"></i>`;
-            
             const card = document.createElement("div");
+            // Standard card style
             card.className = "card animate-fade-up";
             card.innerHTML = `
-                <div style="margin-bottom: 15px; color: #ffd700;">${starsHtml}</div>
-                <p style="font-style: italic;">"${data.review}"</p>
-                <div style="margin-top: 20px; font-weight: bold; color: var(--primary);">— ${data.name}</div>
+                <div style="color: #ffd700; margin-bottom: 15px; font-size: 1.2rem;">${'★'.repeat(data.stars)}</div>
+                <p style="font-style: italic; font-size: 1.1rem; color: #555;">"${data.review}"</p>
+                <h4 style="margin-top: 20px; color: #0077cc; font-weight: bold;">— ${data.name}</h4>
             `;
-            container.appendChild(card);
+            gridDiv.appendChild(card);
         });
-    } catch(err) { console.error(err); }
+        container.appendChild(gridDiv);
+    } catch(err) {}
   }
+
+  loadHomeServices();
   loadTestimonials();
 
-  // --- Scroll Animation ---
+  // Scroll Animation Observer
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => { if (entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.animationPlayState = 'running'; });
   });
-  document.querySelectorAll('.animate-fade-up').forEach((el) => observer.observe(el));
+  document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script>
+  const canvas = document.getElementById('recoveryCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', () => { resizeCanvas(); init(); });
+  resizeCanvas();
+
+  let particlesArray;
+  const mouse = { x: null, y: null, radius: 150 };
+
+  window.addEventListener('mousemove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = event.clientX - rect.left;
+      mouse.y = event.clientY - rect.top;
+  });
+
+  window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
+
+  class Particle {
+      constructor(x, y, dx, dy, size) {
+          this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size;
+      }
+      draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+      }
+      update() {
+          if (this.x > canvas.width || this.x < 0) this.dx = -this.dx;
+          if (this.y > canvas.height || this.y < 0) this.dy = -this.dy;
+          this.x += this.dx; this.y += this.dy;
+          this.draw();
+      }
+  }
+
+  function init() {
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 9000; 
+      for (let i = 0; i < numberOfParticles; i++) {
+          let size = (Math.random() * 2) + 1;
+          let x = Math.random() * canvas.width;
+          let y = Math.random() * canvas.height;
+          let dx = (Math.random() * 0.5) - 0.25; 
+          let dy = (Math.random() * 0.5) - 0.25;
+          particlesArray.push(new Particle(x, y, dx, dy, size));
+      }
+  }
+
+  function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+      connect();
+  }
+
+  function connect() {
+      for (let a = 0; a < particlesArray.length; a++) {
+          let dx = particlesArray[a].x - mouse.x;
+          let dy = particlesArray[a].y - mouse.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.stroke();
+          }
+      }
+  }
+  init(); animate();
 </script>
 
 </body>

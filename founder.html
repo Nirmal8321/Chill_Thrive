@@ -3,59 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chill Thrive | Founder</title>
+  <title>Chill Thrive | Meet the Founder</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* Specific Styles for Founder Page */
+    .founder-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      flex-wrap: wrap; /* Good for mobile */
+    }
+
+    .founder-img {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+
+    .founder-img img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .founder-img img:hover {
+      transform: scale(1.02);
+    }
+
+    .founder-text {
+      flex: 1.5;
+      min-width: 300px;
+    }
+
+    .founder-text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #002b4d;
+    }
+
+    .founder-text h4 {
+      font-size: 1.2rem;
+      color: #0077cc;
+      margin-bottom: 25px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .founder-text p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .qualifications {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #e6f7ff;
+      color: #0077cc;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid #bae7ff;
+    }
+
+    /* Mission Quote */
+    .mission-box {
+      background: #0077cc;
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+      margin-top: 50px;
+    }
+    
+    .mission-box h3 { font-size: 2rem; margin-bottom: 20px; }
+    .mission-box p { font-size: 1.2rem; max-width: 700px; margin: 0 auto; opacity: 0.9; font-style: italic; }
+
+  </style>
 </head>
 
-<body>
+<body class="founder-page">
 
 <nav class="navbar animate-fade-up">
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="booking.html">Book Now</a>
   <a href="awareness.html">Awareness</a>
-  <a href="founder.html">Founder</a> <a href="gallery.html">Gallery</a>
+  <a href="founder.html">Founder</a>
+  <a href="gallery.html">Gallery</a>
   <a href="contact.html">Contact</a>
 </nav>
 
 <header class="page-header animate-fade-up">
-  <h1>Our Founder</h1>
-  <p>The vision behind Chill Thrive</p>
+  <div class="dynamic-bg"></div>
+  <h1>Meet the Visionary</h1>
+  <p>The story behind Chill Thrive and our passion for recovery.</p>
 </header>
 
-<section class="founder-section">
+<section class="founder-section animate-fade-up">
+  
+  <div class="founder-img">
+    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Founder Photo">
+  </div>
 
-  <div class="founder-card animate-fade-up">
-    <img src="assets/images/founder.jpg" alt="Founder Image" />
+  <div class="founder-text">
+    <h2>Rahul Verma</h2>
+    <h4>Founder & Lead Recovery Specialist</h4>
+    
+    <p>
+      Hi, I'm Rahul. My journey into cold therapy began after a sports injury left me searching for better ways to heal. Traditional recovery methods were slow, but discovering the power of <strong>Contrast Therapy</strong> changed everything for me.
+    </p>
+    
+    <p>
+      I built <strong>Chill Thrive</strong> with a simple mission: to bring professional-grade recovery science to everyone, not just elite athletes. Whether you are a marathon runner, a busy executive, or someone dealing with chronic pain, we have created a space for you to reset and recharge.
+    </p>
 
-    <div class="founder-content">
-      <h2>Founder’s Story</h2>
-      <p>
-        Chill Thrive was founded with a simple belief — recovery is not a luxury,
-        it is a necessity. The idea was born from understanding the physical and
-        mental demands of modern life.
-      </p>
+    <div class="qualifications">
+      <span class="badge"><i class="fas fa-certificate"></i> Certified Cryotherapist</span>
+      <span class="badge"><i class="fas fa-running"></i> Sports Science Major</span>
+      <span class="badge"><i class="fas fa-heart"></i> Wellness Coach</span>
+    </div>
 
-      <p>
-        Through cold and heat therapy, Chill Thrive aims to help individuals
-        improve resilience, performance, and overall well-being.
-      </p>
-
-      <h3>Mission & Values</h3>
-      <ul>
-        <li>Science-backed wellness</li>
-        <li>Consistency in recovery</li>
-        <li>Community-driven health</li>
-        <li>Premium & hygienic experiences</li>
-      </ul>
-
-      <blockquote>
-        “Recovery is where strength is built.”
-      </blockquote>
+    <div style="margin-top: 40px;">
+        <a href="contact.html" class="btn">Get in Touch</a>
     </div>
   </div>
 
+</section>
+
+<section class="mission-box animate-fade-up">
+  <h3>"Recovery is not a luxury. It's a necessity."</h3>
+  <p>We believe that taking care of your body today gives you the strength to conquer tomorrow.</p>
 </section>
 
 <footer class="site-footer">
@@ -64,11 +157,13 @@
 
 <script>
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) entry.target.style.animationPlayState = 'running';
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
     });
   });
-  document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+  document.querySelectorAll('.animate-fade-up').forEach((el) => observer.observe(el));
 </script>
 
 </body>
