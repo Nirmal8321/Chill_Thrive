@@ -5,37 +5,23 @@
   <title>Admin Portal | Chill Thrive</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  
   <style>
-    /* --- ADMIN DASHBOARD STYLES --- */
     body { background: #f0f2f5; min-height: 100vh; display: flex; font-family: sans-serif; }
-    
-    /* Login Screen */
     #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0a2540, #0077cc); z-index: 9999; display: flex; justify-content: center; align-items: center; }
     .login-box { background: white; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); width: 350px; }
     .login-box input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 6px; }
-    
-    /* Sidebar */
     .sidebar { width: 250px; background: #001529; color: white; height: 100vh; position: fixed; left: 0; top: 0; padding: 20px; display: none; z-index: 100; overflow-y: auto; }
     .sidebar h2 { margin-bottom: 40px; font-size: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
     .sidebar a { display: block; color: #a6adb4; padding: 15px; text-decoration: none; font-size: 1rem; transition: 0.3s; border-radius: 6px; margin-bottom: 5px; cursor: pointer; }
     .sidebar a:hover, .sidebar a.active { background: #1890ff; color: white; }
     .sidebar a i { margin-right: 10px; }
-    
-    /* Main Content */
     .main-content { margin-left: 250px; padding: 40px; width: 100%; display: none; }
     .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    
-    /* Tables */
     .data-table { width: 100%; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-collapse: collapse; margin-bottom: 30px; }
     .data-table th { background: #fafafa; padding: 20px; text-align: left; font-weight: 600; color: #555; border-bottom: 1px solid #eee; }
     .data-table td { padding: 20px; border-bottom: 1px solid #eee; color: #333; }
-    
-    /* Buttons */
     .btn-delete { background: #fff1f0; color: #ff4d4f; border: 1px solid #ffa39e; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
     .btn-refresh { background: #0077cc; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
-    
-    /* Forms */
     .form-box { background: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
     .form-box label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.9rem; color: #555; }
     .form-box input, .form-box select, .form-box textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; }
@@ -47,34 +33,33 @@
   <div id="loginScreen">
     <div class="login-box">
       <h2 style="color: #0a2540;">Admin Login</h2>
+      <input type="email" id="emailInput" placeholder="Enter Admin Email">
       <input type="password" id="passwordInput" placeholder="Enter Password">
-      <button class="btn" onclick="checkLogin()" style="width:100%; padding:10px; background:#0077cc; color:white; border:none; border-radius:6px; cursor:pointer;">Login</button>
+      <button class="btn" id="loginBtn" style="width:100%; padding:10px; background:#0077cc; color:white; border:none; border-radius:6px; cursor:pointer;">Login</button>
       <p id="loginError" style="color: red; margin-top: 10px;"></p>
     </div>
   </div>
 
   <div class="sidebar" id="sidebar">
     <h2><i class="fas fa-bolt"></i> Chill Thrive</h2>
-    <a id="nav-bookings" onclick="showSection('bookings')" class="active"><i class="fas fa-calendar-check"></i> Bookings</a>
-    <a id="nav-services" onclick="showSection('services')"><i class="fas fa-tags"></i> Services & Prices</a>
-    <a id="nav-cms" onclick="showSection('cms')"><i class="fas fa-edit"></i> Manage Awareness</a>
-    <a id="nav-gallery" onclick="showSection('gallery')"><i class="fas fa-images"></i> Gallery</a>
-    <a id="nav-testimonials" onclick="showSection('testimonials')"><i class="fas fa-star"></i> Testimonials</a>
-    <a id="nav-messages" onclick="showSection('messages')"><i class="fas fa-envelope"></i> Inbox</a>
+    <a id="nav-bookings" class="nav-item active" data-section="bookings"><i class="fas fa-calendar-check"></i> Bookings</a>
+    <a id="nav-services" class="nav-item" data-section="services"><i class="fas fa-tags"></i> Services & Prices</a>
+    <a id="nav-cms" class="nav-item" data-section="cms"><i class="fas fa-edit"></i> Manage Awareness</a>
+    <a id="nav-gallery" class="nav-item" data-section="gallery"><i class="fas fa-images"></i> Gallery</a>
+    <a id="nav-testimonials" class="nav-item" data-section="testimonials"><i class="fas fa-star"></i> Testimonials</a>
+    <a id="nav-messages" class="nav-item" data-section="messages"><i class="fas fa-envelope"></i> Inbox</a>
     
     <a href="index.html" style="margin-top: 50px; background: rgba(255,255,255,0.1);"><i class="fas fa-sign-out-alt"></i> Back to Website</a>
   </div>
 
   <div class="main-content" id="mainContent">
-
     <div id="section-bookings">
-      <div class="header-bar"><h1>Bookings</h1><button class="btn-refresh" onclick="loadBookings()">Refresh</button></div>
+      <div class="header-bar"><h1>Bookings</h1><button class="btn-refresh" id="refreshBookings">Refresh</button></div>
       <table class="data-table"><thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="bookingTable"></tbody></table>
     </div>
 
     <div id="section-services" style="display: none;">
-      <div class="header-bar"><h1>Manage Services</h1><button class="btn-refresh" onclick="initDefaultServices()" style="background:#faad14;">Initialize Defaults</button></div>
-      
+      <div class="header-bar"><h1>Manage Services</h1><button class="btn-refresh" id="initServicesBtn" style="background:#faad14;">Initialize Defaults</button></div>
       <div class="form-box">
         <h3>Add New Service</h3>
         <div style="display:flex; flex-wrap:wrap; gap:15px;">
@@ -82,16 +67,12 @@
             <div style="flex:1; min-width: 100px;"><label>Price (₹)</label><input id="newServicePrice" placeholder="e.g. 999"></div>
             <div style="flex:1; min-width: 100px;"><label>Duration</label><input id="newServiceDuration" placeholder="e.g. 30m"></div>
         </div>
-        
         <div style="margin-top: 5px;">
             <label>Video URL (YouTube or Direct MP4 Link)</label>
-            <input id="newServiceVideo" placeholder="Paste link here (e.g. https://www.youtube.com/watch?v=...)">
-            <small style="color:gray;">*Paste any link. The website will automatically make it playable.</small>
+            <input id="newServiceVideo" placeholder="Paste link here">
         </div>
-
-        <button class="btn-refresh" onclick="addService()" style="margin-top:10px;">Add Service</button>
+        <button class="btn-refresh" id="addServiceBtn" style="margin-top:10px;">Add Service</button>
       </div>
-
       <table class="data-table">
         <thead><tr><th>Name</th><th>Price</th><th>Duration</th><th>Video?</th><th>Action</th></tr></thead>
         <tbody id="serviceTable"></tbody>
@@ -99,7 +80,7 @@
     </div>
 
     <div id="section-cms" style="display: none;">
-      <div class="header-bar"><h1>Awareness Content</h1><button class="btn-refresh" onclick="initAwarenessDefaults()" style="background:#faad14;">Load Default Boxes</button></div>
+      <div class="header-bar"><h1>Awareness Content</h1><button class="btn-refresh" id="initAwarenessBtn" style="background:#faad14;">Load Default Boxes</button></div>
       <div class="form-box">
         <h3>Add New Info Box</h3>
         <input type="text" id="awTitle" placeholder="Title">
@@ -117,7 +98,7 @@
             <option value="normal">Normal Style (Blue)</option>
             <option value="warning">Warning Style (Red)</option>
           </select>
-          <button class="btn-refresh" onclick="addAwarenessCard()" style="flex:1;">Add Box</button>
+          <button class="btn-refresh" id="addAwarenessBtn" style="flex:1;">Add Box</button>
         </div>
       </div>
       <table class="data-table"><thead><tr><th>Title</th><th>Description</th><th>Type</th><th>Action</th></tr></thead><tbody id="awarenessTable"></tbody></table>
@@ -128,21 +109,19 @@
       <div class="form-box">
         <label>Media URL (Image or Video)</label>
         <input type="text" id="newImgUrl" placeholder="Paste Image URL or YouTube/MP4 Link...">
-        <button class="btn-refresh" onclick="addGalleryImage()">Add Media</button>
+        <button class="btn-refresh" id="addGalleryBtn">Add Media</button>
       </div>
       <table class="data-table"><tbody id="galleryTable"></tbody></table>
     </div>
 
     <div id="section-testimonials" style="display: none;">
-      <div class="header-bar"><h1>Testimonials</h1><button class="btn-refresh" onclick="initTestimonialDefaults()" style="background:#faad14;">Load Defaults</button></div>
-      
+      <div class="header-bar"><h1>Testimonials</h1><button class="btn-refresh" id="initTestimonialsBtn" style="background:#faad14;">Load Defaults</button></div>
       <div class="form-box" style="display: flex; gap: 10px; align-items: end;">
         <div style="flex: 1;"><label>Client Name</label><input type="text" id="testName" placeholder="e.g. John Doe"></div>
         <div style="flex: 2;"><label>Review</label><input type="text" id="testReview" placeholder="e.g. Amazing experience!"></div>
         <div style="width: 100px;"><label>Stars</label><input type="number" id="testStars" min="1" max="5" value="5"></div>
-        <button class="btn-refresh" onclick="addTestimonial()">Add</button>
+        <button class="btn-refresh" id="addTestimonialBtn">Add</button>
       </div>
-
       <table class="data-table">
         <thead><tr><th>Name</th><th>Review</th><th>Stars</th><th>Action</th></tr></thead>
         <tbody id="testimonialTable"></tbody>
@@ -150,190 +129,210 @@
     </div>
 
     <div id="section-messages" style="display: none;">
-      <div class="header-bar"><h1>Inbox</h1><button class="btn-refresh" onclick="loadMessages()">Refresh</button></div>
+      <div class="header-bar"><h1>Inbox</h1><button class="btn-refresh" id="refreshMessages">Refresh</button></div>
       <table class="data-table">
         <thead><tr><th>From</th><th>Email</th><th>Message</th><th>Date</th><th>Action</th></tr></thead>
         <tbody id="messageTable"></tbody>
       </table>
     </div>
-
   </div>
 
   <script type="module">
-    import { db, collection, getDocs, addDoc, deleteDoc, doc } from "./js/firebase.js";
+    import { db, auth, collection, getDocs, addDoc, deleteDoc, doc, signInWithEmailAndPassword } from "./js/firebase.js";
+    import { extractYouTubeId } from "./js/main.js";
 
-    // Navigation & Login
-    window.checkLogin = function() {
-      if(document.getElementById("passwordInput").value === "admin123") {
+    // Login Handler
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("emailInput").value;
+      const pass = document.getElementById("passwordInput").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
         document.getElementById("loginScreen").style.display = "none";
         document.getElementById("sidebar").style.display = "block";
         document.getElementById("mainContent").style.display = "block";
         loadBookings();
-      } else {
-        document.getElementById("loginError").innerText = "Invalid Password!";
+      } catch (err) {
+        document.getElementById("loginError").innerText = "Invalid Email or Password!";
+      }
+    });
+
+    // Navigation Switcher
+    document.querySelectorAll(".nav-item").forEach(item => {
+      item.addEventListener("click", (e) => {
+        const targetSection = e.currentTarget.getAttribute("data-section");
+        document.querySelectorAll('.main-content > div').forEach(div => div.style.display = 'none');
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        document.getElementById("section-" + targetSection).style.display = "block";
+        e.currentTarget.classList.add("active");
+
+        if(targetSection === 'bookings') loadBookings();
+        if(targetSection === 'services') loadServices();
+        if(targetSection === 'cms') loadAwareness();
+        if(targetSection === 'gallery') loadGallery();
+        if(targetSection === 'testimonials') loadTestimonials();
+        if(targetSection === 'messages') loadMessages();
+      });
+    });
+
+    // Centralized Delete Handler
+    async function delItem(colName, docId, reloadCallback) {
+      if(confirm("Are you sure you want to delete this item?")) {
+        await deleteDoc(doc(db, colName, docId));
+        reloadCallback();
       }
     }
 
-    window.showSection = function(id) {
-      document.querySelectorAll('.main-content > div').forEach(div => div.style.display = 'none');
-      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-      document.getElementById("section-" + id).style.display = "block";
-      document.getElementById("nav-" + id).classList.add("active");
-      
-      if(id === 'bookings') loadBookings();
-      if(id === 'services') loadServices();
-      if(id === 'cms') loadAwareness();
-      if(id === 'gallery') loadGallery();
-      if(id === 'testimonials') loadTestimonials();
-      if(id === 'messages') loadMessages();
-    }
-
-    // --- Bookings ---
-    window.loadBookings = async () => {
+    // Bookings
+    async function loadBookings() {
       const t = document.getElementById("bookingTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
       const s = await getDocs(collection(db, "bookings")); t.innerHTML = "";
-      s.forEach(d => t.innerHTML += `<tr><td>${d.data().name}</td><td>${d.data().service}</td><td>${d.data().date}</td><td>Confirmed</td><td><button class="btn-delete" onclick="del('bookings','${d.id}', loadBookings)">Cancel</button></td></tr>`);
+      s.forEach(d => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${d.data().name}</td><td>${d.data().service}</td><td>${d.data().date}</td><td>Confirmed</td><td><button class="btn-delete">Cancel</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("bookings", d.id, loadBookings);
+        t.appendChild(row);
+      });
     }
+    document.getElementById("refreshBookings").onclick = loadBookings;
 
-    // --- Services ---
-    window.loadServices = async () => {
+    // Services
+    async function loadServices() {
       const t = document.getElementById("serviceTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
       const s = await getDocs(collection(db, "services")); t.innerHTML = "";
       s.forEach(d => {
         const data = d.data();
         const hasVideo = data.videoUrl ? '<span style="color:green; font-weight:bold;">✔ Yes</span>' : '<span style="color:#ccc;">No</span>';
-        t.innerHTML += `<tr><td>${data.name}</td><td>${data.price}</td><td>${data.duration}</td><td>${hasVideo}</td><td><button class="btn-delete" onclick="del('services','${d.id}', loadServices)">Delete</button></td></tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${data.name}</td><td>${data.price}</td><td>${data.duration}</td><td>${hasVideo}</td><td><button class="btn-delete">Delete</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("services", d.id, loadServices);
+        t.appendChild(row);
       });
     }
 
-    window.addService = async () => { 
-        await addDoc(collection(db,"services"),{
-            name: document.getElementById("newServiceName").value, 
-            price: document.getElementById("newServicePrice").value, 
-            duration: document.getElementById("newServiceDuration").value,
-            videoUrl: document.getElementById("newServiceVideo").value
-        }); 
-        
-        document.getElementById("newServiceName").value = "";
-        document.getElementById("newServicePrice").value = "";
-        document.getElementById("newServiceDuration").value = "";
-        document.getElementById("newServiceVideo").value = "";
-        
-        loadServices(); 
-    }
-    
-    window.initDefaultServices = async () => { 
-        await addDoc(collection(db,"services"),{name:"Ice Bath", price:"999", duration:"30m", videoUrl: ""}); 
-        await addDoc(collection(db,"services"),{name:"Jacuzzi", price:"799", duration:"30m", videoUrl: ""}); 
-        loadServices(); 
-    }
+    document.getElementById("addServiceBtn").onclick = async () => {
+      await addDoc(collection(db, "services"), {
+        name: document.getElementById("newServiceName").value,
+        price: document.getElementById("newServicePrice").value,
+        duration: document.getElementById("newServiceDuration").value,
+        videoUrl: document.getElementById("newServiceVideo").value
+      });
+      document.getElementById("newServiceName").value = "";
+      document.getElementById("newServicePrice").value = "";
+      document.getElementById("newServiceDuration").value = "";
+      document.getElementById("newServiceVideo").value = "";
+      loadServices();
+    };
 
-    // --- AWARENESS ---
-    window.loadAwareness = async () => {
+    document.getElementById("initServicesBtn").onclick = async () => {
+      await addDoc(collection(db, "services"), { name: "Ice Bath", price: "999", duration: "30m", videoUrl: "" });
+      await addDoc(collection(db, "services"), { name: "Jacuzzi", price: "799", duration: "30m", videoUrl: "" });
+      loadServices();
+    };
+
+    // Awareness
+    async function loadAwareness() {
       const t = document.getElementById("awarenessTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
       const s = await getDocs(collection(db, "awareness_cards")); t.innerHTML = "";
-      if(s.empty) { t.innerHTML = "<tr><td colspan='4'>No boxes. Click 'Load Defaults'.</td></tr>"; return; }
       s.forEach(d => {
         const data = d.data();
-        t.innerHTML += `<tr><td><i class="fas ${data.icon}"></i> ${data.title}</td><td>${data.description.substring(0,50)}...</td><td>${data.type}</td><td><button class="btn-delete" onclick="del('awareness_cards','${d.id}', loadAwareness)">Delete</button></td></tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td><i class="fas ${data.icon}"></i> ${data.title}</td><td>${data.description.substring(0, 50)}...</td><td>${data.type}</td><td><button class="btn-delete">Delete</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("awareness_cards", d.id, loadAwareness);
+        t.appendChild(row);
       });
     }
-    window.addAwarenessCard = async () => {
+
+    document.getElementById("addAwarenessBtn").onclick = async () => {
       const title = document.getElementById("awTitle").value;
       const desc = document.getElementById("awDesc").value;
       const icon = document.getElementById("awIcon").value;
       const type = document.getElementById("awType").value;
-      if(title) { await addDoc(collection(db, "awareness_cards"), { title, description: desc, icon, type }); loadAwareness(); }
-    }
-    window.initAwarenessDefaults = async () => {
+      if (title) {
+        await addDoc(collection(db, "awareness_cards"), { title, description: desc, icon, type });
+        loadAwareness();
+      }
+    };
+
+    document.getElementById("initAwarenessBtn").onclick = async () => {
       const defaults = [
-        { title: "What is Cold Therapy?", description: "Cold therapy involves exposing the body to cold temperatures to reduce inflammation.", icon: "fa-snowflake", type: "normal" },
+        { title: "What is Cold Therapy?", description: "Cold therapy involves exposing the body to cold temperatures.", icon: "fa-snowflake", type: "normal" },
         { title: "Who Should Avoid?", description: "Heart conditions or high blood pressure.", icon: "fa-exclamation-triangle", type: "warning" }
       ];
       for(const box of defaults) await addDoc(collection(db, "awareness_cards"), box);
       loadAwareness();
-    }
+    };
 
-    // --- UPDATED GALLERY SCRIPT (Smart Loader) ---
-    window.loadGallery = async () => {
-      const t = document.getElementById("galleryTable"); 
-      t.innerHTML = "<tr><td>Loading...</td></tr>";
-      const s = await getDocs(collection(db, "gallery")); 
-      t.innerHTML = "";
-      
+    // Gallery
+    async function loadGallery() {
+      const t = document.getElementById("galleryTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
+      const s = await getDocs(collection(db, "gallery")); t.innerHTML = "";
       s.forEach(d => {
-        const data = d.data();
-        const url = data.url;
+        const url = d.data().url;
         let previewHTML = "";
+        const vId = extractYouTubeId(url);
 
-        // 1. Check if it is a Video File (MP4/WebM)
         if (url.match(/\.(mp4|webm|ogg)$/i)) {
-            previewHTML = `<video src="${url}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;"></video>`;
-        } 
-        // 2. Check if it is YouTube
-        else if (url.includes("youtube.com") || url.includes("youtu.be")) {
-            let vId = "";
-            if (url.includes("watch?v=")) vId = url.split("v=")[1].split("&")[0];
-            else if (url.includes("youtu.be")) vId = url.split("/").pop();
-            else if (url.includes("embed")) vId = url.split("/").pop();
-            
-            // Show YouTube Thumbnail
-            previewHTML = `<img src="https://img.youtube.com/vi/${vId}/default.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
-        } 
-        // 3. Assume it is an Image
-        else {
-            previewHTML = `<img src="${url}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
+          previewHTML = `<video src="${url}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;"></video>`;
+        } else if (vId) {
+          previewHTML = `<img src="https://img.youtube.com/vi/${vId}/default.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
+        } else {
+          previewHTML = `<img src="${url}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
         }
 
-        t.innerHTML += `
-            <tr>
-                <td>${previewHTML}</td>
-                <td style="font-size:0.8rem; color:#666;">${url.substring(0, 30)}...</td>
-                <td><button class="btn-delete" onclick="del('gallery','${d.id}', loadGallery)">Remove</button></td>
-            </tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${previewHTML}</td><td style="font-size:0.8rem; color:#666;">${url.substring(0, 30)}...</td><td><button class="btn-delete">Remove</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("gallery", d.id, loadGallery);
+        t.appendChild(row);
       });
     }
-    window.addGalleryImage = async () => { await addDoc(collection(db,"gallery"),{url:document.getElementById("newImgUrl").value}); loadGallery(); }
 
-    // --- TESTIMONIALS ---
-    window.loadTestimonials = async () => {
+    document.getElementById("addGalleryBtn").onclick = async () => {
+      await addDoc(collection(db, "gallery"), { url: document.getElementById("newImgUrl").value });
+      document.getElementById("newImgUrl").value = "";
+      loadGallery();
+    };
+
+    // Testimonials
+    async function loadTestimonials() {
       const t = document.getElementById("testimonialTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
       const s = await getDocs(collection(db, "testimonials")); t.innerHTML = "";
-      if(s.empty) { t.innerHTML = "<tr><td colspan='4'>No reviews. Click 'Load Defaults'.</td></tr>"; return; }
       s.forEach(d => {
         const data = d.data();
-        t.innerHTML += `<tr><td>${data.name}</td><td>${data.review}</td><td>${data.stars} ⭐</td><td><button class="btn-delete" onclick="del('testimonials','${d.id}', loadTestimonials)">Delete</button></td></tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${data.name}</td><td>${data.review}</td><td>${data.stars} ⭐</td><td><button class="btn-delete">Delete</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("testimonials", d.id, loadTestimonials);
+        t.appendChild(row);
       });
     }
-    window.addTestimonial = async () => {
+
+    document.getElementById("addTestimonialBtn").onclick = async () => {
       const name = document.getElementById("testName").value;
       const review = document.getElementById("testReview").value;
       const stars = document.getElementById("testStars").value;
-      if(name && review) { await addDoc(collection(db, "testimonials"), { name, review, stars }); loadTestimonials(); }
-    }
-    window.initTestimonialDefaults = async () => {
-        await addDoc(collection(db, "testimonials"), { name: "Sarah J.", review: "The best recovery experience in the city!", stars: "5" });
+      if (name && review) {
+        await addDoc(collection(db, "testimonials"), { name, review, stars });
         loadTestimonials();
-    }
+      }
+    };
 
-    // --- MESSAGES ---
-    window.loadMessages = async () => {
+    document.getElementById("initTestimonialsBtn").onclick = async () => {
+      await addDoc(collection(db, "testimonials"), { name: "Sarah J.", review: "The best recovery experience in the city!", stars: "5" });
+      loadTestimonials();
+    };
+
+    // Inbox Messages
+    async function loadMessages() {
       const t = document.getElementById("messageTable"); t.innerHTML = "<tr><td>Loading...</td></tr>";
       const s = await getDocs(collection(db, "messages")); t.innerHTML = "";
-      if(s.empty) { t.innerHTML = "<tr><td colspan='5'>No messages found.</td></tr>"; return; }
       s.forEach(d => {
         const data = d.data();
-        t.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.message}</td><td>${data.date}</td><td><button class="btn-delete" onclick="del('messages','${d.id}', loadMessages)">Delete</button></td></tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${data.name}</td><td>${data.email}</td><td>${data.message}</td><td>${data.date}</td><td><button class="btn-delete">Delete</button></td>`;
+        row.querySelector(".btn-delete").onclick = () => delItem("messages", d.id, loadMessages);
+        t.appendChild(row);
       });
     }
-
-    // --- Global Delete ---
-    window.del = async (col, id, reloadFunc) => { if(confirm("Delete item?")) { await deleteDoc(doc(db, col, id)); reloadFunc(); } }
-
-    // Exports
-    window.del = del; window.addAwarenessCard = addAwarenessCard; window.initAwarenessDefaults = initAwarenessDefaults;
-    window.addService = addService; window.initDefaultServices = initDefaultServices; window.addGalleryImage = addGalleryImage;
-    window.loadMessages = loadMessages; window.addTestimonial = addTestimonial; window.initTestimonialDefaults = initTestimonialDefaults;
+    document.getElementById("refreshMessages").onclick = loadMessages;
   </script>
 </body>
 </html>

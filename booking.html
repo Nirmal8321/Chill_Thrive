@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Specific Styles for Booking Form */
     .booking-container {
       max-width: 600px;
       margin: 0 auto;
@@ -22,15 +21,7 @@
 
 <body>
 
-<nav class="navbar animate-fade-up">
-  <a href="index.html">Home</a>
-  <a href="services.html">Services</a>
-  <a href="booking.html">Book Now</a>
-  <a href="awareness.html">Awareness</a>
-  <a href="founder.html">Founder</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="contact.html">Contact</a>
-</nav>
+<div id="navbar-placeholder"></div>
 
 <header class="page-header animate-fade-up">
   <h1>Book Your Session</h1>
@@ -39,13 +30,12 @@
 
 <section style="padding: 0 20px 80px;">
   <div class="booking-container animate-fade-up">
-    
     <form id="bookingForm">
       <label style="font-weight: bold; color: #0077cc;">Full Name</label>
       <input type="text" id="bName" placeholder="Enter your name" required>
 
       <label style="font-weight: bold; color: #0077cc;">Phone Number</label>
-      <input type="tel" id="bPhone" placeholder="Enter your phone number" required>
+      <input type="tel" id="bPhone" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" placeholder="10-digit phone number" required>
 
       <label style="font-weight: bold; color: #0077cc;">Select Service</label>
       <select id="bService" required>
@@ -64,7 +54,6 @@
 
       <button type="submit" class="btn" style="width: 100%; margin-top: 20px; font-size: 1.2rem;">Confirm Booking</button>
     </form>
-
   </div>
 </section>
 
@@ -74,65 +63,50 @@
 
 <script type="module">
   import { db, collection, addDoc, getDocs } from "./js/firebase.js";
+  import "./js/main.js";
 
-  // --- 1. LOAD SERVICES INTO DROPDOWN ---
-  // This ensures the dropdown matches exactly what you created in Admin Panel
   async function loadServiceOptions() {
     const select = document.getElementById("bService");
     try {
       const snapshot = await getDocs(collection(db, "services"));
-      
       if (snapshot.empty) {
         select.innerHTML = `<option disabled>No services available</option>`;
         return;
       }
-
       select.innerHTML = `<option value="" disabled selected>-- Choose a Service --</option>`;
-      
       snapshot.forEach(doc => {
         const data = doc.data();
-        // Shows Name AND Price in the dropdown
         const option = document.createElement("option");
         option.value = data.name;
         option.textContent = `${data.name} (₹${data.price})`;
         select.appendChild(option);
       });
-
     } catch (error) {
       console.error("Error loading services:", error);
       select.innerHTML = `<option disabled>Error loading options</option>`;
     }
   }
 
-  // --- 2. HANDLE BOOKING SUBMISSION ---
   document.getElementById("bookingForm").addEventListener("submit", async (e) => {
-    e.preventDefault(); // Stop page refresh
-
-    const name = document.getElementById("bName").value;
-    const phone = document.getElementById("bPhone").value;
-    const service = document.getElementById("bService").value;
-    const date = document.getElementById("bDate").value;
-    const time = document.getElementById("bTime").value;
+    e.preventDefault();
     const submitBtn = e.target.querySelector("button");
 
     try {
       submitBtn.textContent = "Processing...";
       submitBtn.disabled = true;
 
-      // Save to Firebase "bookings" collection
       await addDoc(collection(db, "bookings"), {
-        name: name,
-        phone: phone,
-        service: service,
-        date: date,
-        time: time,
-        status: "Pending", // Default status for Admin
+        name: document.getElementById("bName").value,
+        phone: document.getElementById("bPhone").value,
+        service: document.getElementById("bService").value,
+        date: document.getElementById("bDate").value,
+        time: document.getElementById("bTime").value,
+        status: "Pending",
         timestamp: new Date()
       });
 
       alert("Booking Successful! We will contact you shortly.");
-      e.target.reset(); // Clear form
-      
+      e.target.reset();
     } catch (error) {
       console.error("Error booking:", error);
       alert("Something went wrong. Please try again.");
@@ -142,7 +116,6 @@
     }
   });
 
-  // Run on page load
   loadServiceOptions();
 </script>
 
